@@ -1,222 +1,204 @@
 <!DOCTYPE html>
+<!-- Si el contenido de la página es en español, el valor del atributo debe ser `es` -->
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Empleos</title>
-    <link rel="stylesheet" href="./empleos-style.css" />
-  </head>
-  <body>
-    <header class="header-main">
-      <div id="container-logo-nav">
-        <h2>
-          <svg
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <polyline points="16 18 22 12 16 6"></polyline>
-            <polyline points="8 6 2 12 8 18"></polyline>
-          </svg>
-          DevJobs
-        </h2>
-        <nav>
-          <a href="/">Inicio</a>
-          <a href="">Empleos</a>
-          <a href="">Empresas</a>
-          <a href="">Salarios</a>
-        </nav>
-      </div>
-      <div>
-        <a href="">Subir CV</a>
-        <a href="#"
-          ><img id="header-avatar" src="./me2.jpg" width="48" alt=""
-        /></a>
-      </div>
-    </header>
-    <hr>
-    <main>
-      <section id="input-section-search">
-        <div id="text-control-section">
-          <h1>Encuentra tu proximo trabajo</h1>
-          <p>Explora miles de oportunidades en el sector tecnologico</p>
-        </div>
-        <form action="">
-          <div id="input-search">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-search"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-              <path d="M21 21l-6 -6" />
-            </svg>
-            <input
-              required
-              type="search"
-              placeholder="Buscar empleos por titulo, habilidad o empresa"
-            />
-          </div>
-          <div id="input-searchs">
-              <select id="tecnologia" name="tecnologia">
-                <option value="Tecnologia" selected>Tecnologia</option>
-                <option value="React">React</option>
-                <option value="Javascript">Javascript</option>
-                <option value="Python">Python</option>
-              </select>
-            <select id="ubicacion" name="ubicacion">
-              <option value="ubicacion" selected>Ubicacion</option>
-              <option value="mexico">Mexico</option>
-              <option value="espana">Espania</option>
-              <option value="Chile">Chile</option>
-              <option value="audi">Audi</option>
-            </select>
-            <select id="contrato" name="contrato">
-              <option value="contrato" selected>Contrato</option>
-              <option value="parcial">Parcial</option>
-              <option value="temporal">Temporal</option>
-              <option value="indefinido">Indefinido</option>
-            </select>
-            <select id="experiencia" name="experiencia">
-              <option value="experiencia" selected>Nivel de experiencia</option>
-              <option value="saab">Junior</option>
-              <option value="fiat">Mid</option>
-              <option value="audi">Senior</option>
-            </select>
-          </div>
-        </form>
-      </section>
-      <section>
-        <h2>Resultados de busqueda</h2>
-        <div id="container-grid-list">
-          <div class="card-position">
-            <div class="card-position-top">
-              <div class="card-position-text">
-                <h3>Ingeniero de Software</h3>
-                <small>Tech Solutions Inc. | Remoto</small>
-              </div>
-              <button>Aplicar</button>
-            </div>
-            <div id="card-position-description">
-              <p>
-                Buscamos un ingeniero de software con experiencia en desarrollo
-                web y conocimientos en JavaScript, React y Node.js. El candidato
-                ideal debe ser capaz de trabajar en equipo y tener buenas
-                habilidades de comunicacion.
-              </p>
-            </div>
-          </div>
-          <div class="card-position">
-            <div class="card-position-top">
-              <div class="card-position-text">
-                <h3>Ingeniero de Software</h3>
-                <small>Tech Solutions Inc. | Remoto</small>
-              </div>
-              <button>Aplicar</button>
-            </div>
-            <div id="card-position-description">
-              <p>
-                Buscamos un ingeniero de software con experiencia en desarrollo
-                web y conocimientos en JavaScript, React y Node.js. El candidato
-                ideal debe ser capaz de trabajar en equipo y tener buenas
-                habilidades de comunicacion.
-              </p>
-            </div>
-          </div>
-          <div class="card-position">
-            <div class="card-position-top">
-              <div class="card-position-text">
-                <h3>Ingeniero de Software</h3>
-                <small>Tech Solutions Inc. | Remoto</small>
-              </div>
-              <button>Aplicar</button>
-            </div>
-            <div id="card-position-description">
-              <p>
-                Buscamos un ingeniero de software con experiencia en desarrollo
-                web y conocimientos en JavaScript, React y Node.js. El candidato
-                ideal debe ser capaz de trabajar en equipo y tener buenas
-                habilidades de comunicacion.
-              </p>
-            </div>
-          </div>
-          <div class="card-position">
-            <div class="card-position-top">
-              <div class="card-position-text">
-                <h3>Ingeniero de Software</h3>
-                <small>Tech Solutions Inc. | Remoto</small>
-              </div>
-              <button>Aplicar</button>
-            </div>
-            <div id="card-position-description">
-              <p>
-                Buscamos un ingeniero de software con experiencia en desarrollo
-                web y conocimientos en JavaScript, React y Node.js. El candidato
-                ideal debe ser capaz de trabajar en equipo y tener buenas
-                habilidades de comunicacion.
-              </p>
-            </div>
-          </div>
-        </div>
-        
-        
-      </section>
-      <div id="paginacion">
-        <a>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"
-          >
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Empleos</title>
+  <!-- Siempre es bueno tener una descripción para mejorar el SEO y el contexto del sitio -->
+  <meta name="description" content="Encontrar empleos en el sector tecnológico">
+  <link rel="stylesheet" href="./empleos-style.css" />
+</head>
+
+<body>
+  <header class="header-main">
+    <div id="container-logo-nav">
+      <h2>
+        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <polyline points="16 18 22 12 16 6"></polyline>
+          <polyline points="8 6 2 12 8 18"></polyline>
+        </svg>
+        DevJobs
+      </h2>
+      <nav>
+        <!-- Debe hacer referencia al archivo index.html, que es el inicio del sitio -->
+        <a href="index.html">Inicio</a>
+        <a href="#">Empleos</a>
+        <a href="#">Empresas</a>
+        <a href="#">Salarios</a>
+      </nav>
+    </div>
+    <div>
+      <a href="#">Subir CV</a>
+      <a href="#">
+        <!-- Es recomendado tener el atributo width y height para mantener la relación de aspecto de la imagen mientras se carga. Por otro lado, el alt debe ser un texto que describa la imagen, esto es para que, los lectores de pantalla puedan interpretar correctamente su propósito y si la imagen no carga, tener un texto que la describa -->
+        <img id="header-avatar" src="./me2.jpg" width="48" height="48" alt="Avatar del usuario" />
+      </a>
+    </div>
+  </header>
+  <hr>
+  <main>
+    <section id="input-section-search">
+      <!-- No es necesario agrupar el h1 y el p en un div -->
+      <h1>Encuentra tu proximo trabajo</h1>
+      <p>Explora miles de oportunidades en el sector tecnológico</p>
+      <!-- El atributo role="search" es recomendado para mejorar el SEO y el contexto del sitio, indica que el formulario es para hacer una búsqueda -->
+      <form action="" role="search">
+        <div id="input-search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-search">
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M15 6l-6 6l6 6" />
+            <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+            <path d="M21 21l-6 -6" />
           </svg>
-        </a>
-        <a href="#" class="is-active">1</a>
-        <a>2</a>
-        <a>3</a>
-        <a>4</a>
-        <a>5</a>
-        <a>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M9 6l6 6l-6 6" />
-          </svg>
-        </a>
-      </div>
-    </main>
-    <footer>
-      <small>&copy; 2025 DevJobs. Todos los derechos reservados.</small>
-    </footer>
-  </body>
+          <!-- En este caso required no es necesario. El propósito del formulario es buscar empleos, y si el usuario solo decide buscar por el select de `tecnologia`, no podría hacerlo hasta que el input tenga un valor. Por lo tanto, el atributo required no es necesario -->
+          <!-- Es importante que el `input` tenga el atributo `name`, para que al enviarse el formulario, pueda obtener el valor del input desde esa referencia -->
+          <input type="search" name="search" placeholder="Buscar empleos por titulo, habilidad o empresa" />
+        </div>
+        <div id="input-searchs">
+          <select id="tecnologia" name="tecnologia">
+            <option value="Tecnologia" selected>Tecnología</option>
+            <option value="React">React</option>
+            <option value="Javascript">Javascript</option>
+            <option value="Python">Python</option>
+          </select>
+          <select id="ubicacion" name="ubicacion">
+            <option value="ubicacion" selected>Ubicación</option>
+            <option value="mexico">Mexico</option>
+            <option value="espana">Espania</option>
+            <option value="chile">Chile</option>
+          </select>
+          <select id="contrato" name="contrato">
+            <option value="contrato" selected>Contrato</option>
+            <option value="parcial">Parcial</option>
+            <option value="temporal">Temporal</option>
+            <option value="indefinido">Indefinido</option>
+          </select>
+          <select id="experiencia" name="experiencia">
+            <option value="experiencia" selected>Nivel de experiencia</option>
+            <option value="junior">Junior</option>
+            <option value="mid">Mid</option>
+            <option value="senior">Senior</option>
+          </select>
+        </div>
+      </form>
+    </section>
+    <section>
+      <h2>Resultados de búsqueda</h2>
+      <ul id="container-grid-list">
+        <li>
+          <article class="card-position">
+            <div class="card-position-top">
+              <div class="card-position-text">
+                <h3>Ingeniero de Software</h3>
+                <small>Tech Solutions Inc. | Remoto</small>
+              </div>
+              <button>Aplicar</button>
+            </div>
+            <div id="card-position-description">
+              <p>
+                Buscamos un ingeniero de software con experiencia en desarrollo
+                web y conocimientos en JavaScript, React y Node.js. El candidato
+                ideal debe ser capaz de trabajar en equipo y tener buenas
+                habilidades de comunicación.
+              </p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card-position">
+            <div class="card-position-top">
+              <div class="card-position-text">
+                <h3>Ingeniero de Software</h3>
+                <small>Tech Solutions Inc. | Remoto</small>
+              </div>
+              <button>Aplicar</button>
+            </div>
+            <div id="card-position-description">
+              <p>
+                Buscamos un ingeniero de software con experiencia en desarrollo
+                web y conocimientos en JavaScript, React y Node.js. El candidato
+                ideal debe ser capaz de trabajar en equipo y tener buenas
+                habilidades de comunicación.
+              </p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card-position">
+            <div class="card-position-top">
+              <div class="card-position-text">
+                <h3>Ingeniero de Software</h3>
+                <small>Tech Solutions Inc. | Remoto</small>
+              </div>
+              <button>Aplicar</button>
+            </div>
+            <div id="card-position-description">
+              <p>
+                Buscamos un ingeniero de software con experiencia en desarrollo
+                web y conocimientos en JavaScript, React y Node.js. El candidato
+                ideal debe ser capaz de trabajar en equipo y tener buenas
+                habilidades de comunicación.
+              </p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="card-position">
+            <div class="card-position-top">
+              <div class="card-position-text">
+                <h3>Ingeniero de Software</h3>
+                <small>Tech Solutions Inc. | Remoto</small>
+              </div>
+              <button>Aplicar</button>
+            </div>
+            <div id="card-position-description">
+              <p>
+                Buscamos un ingeniero de software con experiencia en desarrollo
+                web y conocimientos en JavaScript, React y Node.js. El candidato
+                ideal debe ser capaz de trabajar en equipo y tener buenas
+                habilidades de comunicación.
+              </p>
+            </div>
+          </article>
+        </li>
+      </ul>
+    </section>
+    <div id="paginacion">
+      <!--
+      Si un anchor o button no tiene texto en el interior que indique el propósito del elemento, es recomendable usar algunos atributos para darlo:
+      aria-label, que ayuda a los lectores de pantalla a interpretar el contexto del elemento
+      title, que muestra un tooltip con el valor que se le asigne, a los usuarios cuando hacer hover sobre el elemento
+        -->
+      <a href="#" aria-label="Ir a la página anterior de los resultados de búsqueda" title="Anterior">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M15 6l-6 6l6 6" />
+        </svg>
+      </a>
+      <a href="#" class="is-active">1</a>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a href="#">4</a>
+      <a href="#">5</a>
+      <a href="#" aria-label="Ir a la página siguiente de los resultados de búsqueda" title="Siguiente">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M9 6l6 6l-6 6" />
+        </svg>
+      </a>
+    </div>
+  </main>
+  <footer>
+    <small>&copy; 2025 DevJobs. Todos los derechos reservados.</small>
+  </footer>
+</body>
+
 </html>
