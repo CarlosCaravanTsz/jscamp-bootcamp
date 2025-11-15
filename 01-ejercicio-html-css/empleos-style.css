@@ -224,9 +224,9 @@ main {
     }
 
     #container-grid-list {
-      border: 1px solid var(--primary);
       max-width: 1200px;
       border-radius: 8px;
+      list-style: none;
 
       display: grid;
       grid-template-columns: 1fr;
