@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<!-- Si el contenido de la página es en español, el valor del atributo debe ser `es` -->
-<html lang="en">
-
+<!-- Si el contenido de la página es en español, el valor del atributo debe ser `es`  ✅ -->
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Empleos</title>
-  <!-- Siempre es bueno tener una descripción para mejorar el SEO y el contexto del sitio -->
-  <meta name="description" content="Encontrar empleos en el sector tecnológico">
+  <!-- Siempre es bueno tener una descripción para mejorar el SEO y el contexto del sitio  ✅-->
+  <meta name="description" content="Encuentra los mejores empleos en el sector tecnológico! Explora oportunidades laborales en desarrollo web, programación, diseño y más." />
   <link rel="stylesheet" href="./empleos-style.css" />
 </head>
 
@@ -23,7 +22,7 @@
         DevJobs
       </h2>
       <nav>
-        <!-- Debe hacer referencia al archivo index.html, que es el inicio del sitio -->
+        <!-- Debe hacer referencia al archivo index.html, que es el inicio del sitio ✅ -->
         <a href="index.html">Inicio</a>
         <a href="#">Empleos</a>
         <a href="#">Empresas</a>
@@ -33,7 +32,7 @@
     <div>
       <a href="#">Subir CV</a>
       <a href="#">
-        <!-- Es recomendado tener el atributo width y height para mantener la relación de aspecto de la imagen mientras se carga. Por otro lado, el alt debe ser un texto que describa la imagen, esto es para que, los lectores de pantalla puedan interpretar correctamente su propósito y si la imagen no carga, tener un texto que la describa -->
+        <!-- Es recomendado tener el atributo width y height para mantener la relación de aspecto de la imagen mientras se carga. Por otro lado, el alt debe ser un texto que describa la imagen, esto es para que, los lectores de pantalla puedan interpretar correctamente su propósito y si la imagen no carga, tener un texto que la describa ✅-->
         <img id="header-avatar" src="./me2.jpg" width="48" height="48" alt="Avatar del usuario" />
       </a>
     </div>
@@ -41,10 +40,10 @@
   <hr>
   <main>
     <section id="input-section-search">
-      <!-- No es necesario agrupar el h1 y el p en un div -->
+      <!-- No es necesario agrupar el h1 y el p en un div ✅-->
       <h1>Encuentra tu proximo trabajo</h1>
       <p>Explora miles de oportunidades en el sector tecnológico</p>
-      <!-- El atributo role="search" es recomendado para mejorar el SEO y el contexto del sitio, indica que el formulario es para hacer una búsqueda -->
+      <!-- El atributo role="search" es recomendado para mejorar el SEO y el contexto del sitio, indica que el formulario es para hacer una búsqueda ✅-->
       <form action="" role="search">
         <div id="input-search">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -54,8 +53,8 @@
             <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
             <path d="M21 21l-6 -6" />
           </svg>
-          <!-- En este caso required no es necesario. El propósito del formulario es buscar empleos, y si el usuario solo decide buscar por el select de `tecnologia`, no podría hacerlo hasta que el input tenga un valor. Por lo tanto, el atributo required no es necesario -->
-          <!-- Es importante que el `input` tenga el atributo `name`, para que al enviarse el formulario, pueda obtener el valor del input desde esa referencia -->
+          <!-- En este caso required no es necesario. El propósito del formulario es buscar empleos, y si el usuario solo decide buscar por el select de `tecnologia`, no podría hacerlo hasta que el input tenga un valor. Por lo tanto, el atributo required no es necesario --> ✅
+          <!-- Es importante que el `input` tenga el atributo `name`, para que al enviarse el formulario, pueda obtener el valor del input desde esa referencia ✅-->
           <input type="search" name="search" placeholder="Buscar empleos por titulo, habilidad o empresa" />
         </div>
         <div id="input-searchs">
@@ -171,7 +170,7 @@
       <!--
       Si un anchor o button no tiene texto en el interior que indique el propósito del elemento, es recomendable usar algunos atributos para darlo:
       aria-label, que ayuda a los lectores de pantalla a interpretar el contexto del elemento
-      title, que muestra un tooltip con el valor que se le asigne, a los usuarios cuando hacer hover sobre el elemento
+      title, que muestra un tooltip con el valor que se le asigne, a los usuarios cuando hacer hover sobre el elemento ✅
         -->
       <a href="#" aria-label="Ir a la página anterior de los resultados de búsqueda" title="Anterior">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
