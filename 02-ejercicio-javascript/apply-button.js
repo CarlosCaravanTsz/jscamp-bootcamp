@@ -11,13 +11,3 @@ jobListingSection?.addEventListener("click", (e) => {
   }
 });
 
-
-// const botones = document.querySelectorAll(".card-position-top button");
-
-// botones.forEach((b) => {
-//   b.addEventListener('click', () => {
-//     b.textContent = 'Aplicado!'
-//     b.classList.add('applied')
-//     b.disabled = true
-//   })
-// })

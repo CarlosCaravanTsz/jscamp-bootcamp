@@ -6,7 +6,6 @@ fetch("./data.json")
   .then((response) => response.json())
   .then((jobs) => {
     jobs.forEach((job) => {
-      //const li = document.createElement("li");
       const li = document.createElement("li");
       const article = document.createElement("article");
       article.classList.add("job-listing-card");
