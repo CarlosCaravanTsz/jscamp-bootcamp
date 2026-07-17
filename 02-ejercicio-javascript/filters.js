@@ -1,157 +1,88 @@
 /* Aquí va la lógica para filtrar los resultados de búsqueda */
 
-const filter_ubicacion = document.getElementById("filter-location");
-const filter_experiencia = document.getElementById("filter-experience-level");
-const search_input = document.getElementById("empleos-search-input");
-const filter_tech = document.getElementById("filter-technology");
+/* En JavaScript se recomienda por estándar usar camelCase y no snake_case. Cambie solo estos por practicidad, pero verás que en todos lados se utiliza así  */
+const filterUbicacion = document.getElementById("filter-location");
+const filterExperiencia = document.getElementById("filter-experience-level");
+const searchInput = document.getElementById("empleos-search-input");
+const filterTech = document.getElementById("filter-technology");
 
 
-// BUSQUEDA FILTRO UBICACION MANTENIENDO LOS OTROS 2 FILTROS
-filter_ubicacion?.addEventListener("change", () => {
+/* Si la lógica es la misma, podemos simplificarlo en una sola función y reutilizarla */
+const handleSearchByFilter = () => {
   const jobs = document.querySelectorAll(".job-listing-card");
-  const ubicacion_value = filter_ubicacion.value;
+  const ubicacion_value = filterUbicacion.value;
 
   // Actualizar los valores de los otros filtros
-  const filter_experiencia_updated = document.getElementById("filter-experience-level");
+  /* Si ya guardamos las referencias antes, no hace falta volverlas a guardar en otro puntero */
+  /* const filter_experiencia_updated = document.getElementById("filter-experience-level");
   const filter_tech_updated = document.getElementById("filter-technology");
-  const search_input_updated = document.getElementById("empleos-search-input");
+  const search_input_updated = document.getElementById("empleos-search-input"); */
 
-  const experiencia_value = filter_experiencia_updated.value;
-  const tech_value = filter_tech_updated.value;
-  const query = search_input_updated.value.toLowerCase();
+  const experiencia_value = filterExperiencia.value;
+  const tech_value = filterTech.value;
+  const query = searchInput.value.toLowerCase();
 
-  if (!experiencia_value && !tech_value && !query) {
-    jobs.forEach((job) => {
+  if (!experiencia_value && !tech_value && !query)
+    // Podemos agregar un `return` y nos olvidamos de un `if/else`, queda mas claro
+    return jobs.forEach((job) => {
       const modalidad = job.getAttribute("data-modalidad");
       const isShown = ubicacion_value == "" || ubicacion_value === modalidad;
       job.classList.toggle("is-hidden", !isShown);
     });
-  } else {
-    jobs.forEach((job) => {
-      const modalidad = job.getAttribute("data-modalidad");
-      const nivel = job.getAttribute("data-nivel");
-      const tech = job.getAttribute("data-tech");
-      const title = job
-        .querySelector("h3")
-        .textContent.toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-      const isShown =
-        (ubicacion_value == "" || ubicacion_value === modalidad) &&
-        (experiencia_value == "" || experiencia_value === nivel) && (tech_value == "" || tech.includes(tech_value)) && (query == "" || title.includes(query));
-      job.classList.toggle("is-hidden", !isShown);
-    });
-  }
 
-});
+  jobs.forEach((job) => {
+    const modalidad = job.getAttribute("data-modalidad");
+    const nivel = job.getAttribute("data-nivel");
+    const tech = job.getAttribute("data-tech");
+    const title = normalizeTitleByJob(job)
 
+    // no queda tan claro de leer, podemos separar las validaciones por variables
+    const isValidLocation = ubicacion_value == "" || ubicacion_value === modalidad
+    const isValidExperience = experiencia_value == "" || experiencia_value === nivel
+    const isValidTech = tech_value == "" || tech.includes(tech_value)
+    const isValidQuery = query == "" || title.includes(query)
 
+    const isShown = isValidLocation && isValidExperience && isValidTech && isValidQuery;
+    job.classList.toggle("is-hidden", !isShown);
+  });
+}
+
+/* Como lo utilizamos en dos sitios, lo podemos pasar a una función */
+const normalizeTitleByJob = (job) => {
+  return job
+  .querySelector("h3")
+  .textContent.toLowerCase()
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "");
+}
+
+// BUSQUEDA FILTRO UBICACION MANTENIENDO LOS OTROS 2 FILTROS
+filterUbicacion?.addEventListener("change", handleSearchByFilter);
 // BUSQUEDA FILTRO EXPERIENCIA MANTENIENDO LOS OTROS 2 FILTROS
-filter_experiencia?.addEventListener("change", () => {
-  const jobs = document.querySelectorAll(".job-listing-card");
-  const experiencia_value = filter_experiencia.value;
-
-  const filter_ubicacion_updated = document.getElementById("filter-location");
-  const filter_tech_updated = document.getElementById("filter-technology");
-  const search_input_updated = document.getElementById("empleos-search-input");
-  
-  const ubicacion_value = filter_ubicacion_updated.value;
-  const tech_value = filter_tech_updated.value;
-  const query = search_input_updated.value.toLowerCase();
-
-  if (!ubicacion_value && !tech_value && !query) {
-    jobs.forEach((job) => {
-      const nivel = job.getAttribute("data-nivel");
-      const isShown =
-        (experiencia_value == "" || experiencia_value === nivel);
-      job.classList.toggle("is-hidden", !isShown);
-    });
-  } else {
-    jobs.forEach((job) => {
-      const nivel = job.getAttribute("data-nivel");
-      const modalidad = job.getAttribute("data-modalidad");
-      const tech = job.getAttribute("data-tech");
-      const title = job
-        .querySelector("h3")
-        .textContent.toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-      const isShown =
-        (ubicacion_value == "" || ubicacion_value === modalidad) &&
-        (experiencia_value == "" || experiencia_value === nivel) && (tech_value == "" || tech.includes(tech_value)) && (query == "" || title.includes(query));
-      job.classList.toggle("is-hidden", !isShown);
-    });
-  }
-});
-
+filterExperiencia?.addEventListener("change", handleSearchByFilter);
+// BUSQUEDA FILTRO TECH MANTENIENDO LOS OTROS 3 FILTROS
+filterTech.addEventListener('change', handleSearchByFilter);
 
 // BUSQUEDA POR TITULO CON search input
-search_input.addEventListener("input", () => {
-  const query = search_input.value.toLowerCase();
+searchInput.addEventListener("input", () => {
+  const query = searchInput.value.toLowerCase();
   const jobs = document.querySelectorAll(".job-listing-card");
 
-  const filter_ubicacion_updated = document.getElementById("filter-location");
+  /* const filter_ubicacion_updated = document.getElementById("filter-location");
   const filter_tech_updated = document.getElementById("filter-technology");
-  const filter_experiencia_updated = document.getElementById("filter-experience-level");
+  const filter_experiencia_updated = document.getElementById("filter-experience-level"); */
 
   // SERIA BUENA IDEA RESETEAR LOS FILTROS SEARCH CUANDO ESCRIBE EN EL INPUT?
   // O APLICAR TAMBIEN EL FILTRADO DE LOS OTROS 3 FILTROS MIENTRAS ESCRIBE?
-  filter_ubicacion_updated.value = ""
-  filter_tech_updated.value = ""
-  filter_experiencia_updated.value = ""
+  filterUbicacion.value = ""
+  filterTech.value = ""
+  filterExperiencia.value = ""
 
 
   jobs.forEach(job => {
-
-    const title = job
-      .querySelector("h3")
-      .textContent.toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
+    const title = normalizeTitleByJob(job)
     const isShown = query == "" || title.includes(query)
     job.classList.toggle('is-hidden', !isShown)
     
   })
-
-});
-
-
-
-// BUSQUEDA FILTRO TECH MANTENIENDO LOS OTROS 3 FILTROS
-filter_tech.addEventListener('change', () => {
-  const tech_value = filter_tech.value.toLowerCase();
-  const jobs = document.querySelectorAll(".job-listing-card");
-
-  const filter_experiencia_updated = document.getElementById("filter-experience-level");
-  const filter_ubicacion_updated = document.getElementById("filter-location");
-  const search_input_updated = document.getElementById("empleos-search-input");
-
-  const experiencia_value = filter_experiencia_updated.value;
-  const ubicacion_value = filter_ubicacion_updated.value;
-  const query = search_input_updated.value.toLowerCase();
-
-
-  if (!ubicacion_value && !experiencia_value && !query) {
-    jobs.forEach(job => {
-      const tech = job.getAttribute("data-tech")
-      const isShown = tech_value == '' || tech.includes(tech_value)
-      job.classList.toggle('is-hidden', !isShown)
-    })
-
-  } else {
-    jobs.forEach(job => {
-      const tech = job.getAttribute("data-tech")
-      const nivel = job.getAttribute("data-nivel");
-      const modalidad = job.getAttribute("data-modalidad");
-      const title = job
-        .querySelector("h3")
-        .textContent.toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-      const isShown =
-        (ubicacion_value == "" || ubicacion_value === modalidad) &&
-        (experiencia_value == "" || experiencia_value === nivel) && (tech_value == "" || tech.includes(tech_value)) && (query == "" || title.includes(query));
-      job.classList.toggle("is-hidden", !isShown);
-    });
-  }
 });
