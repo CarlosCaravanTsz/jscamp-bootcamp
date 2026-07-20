@@ -1,12 +1,10 @@
+/* Aquí va la lógica para mostrar los resultados de búsqueda */
 
 const jobListingSection = document.querySelector(".jobs-listings");
 
 fetch("./data.json")
   .then((response) => response.json())
   .then((jobs) => {
-
-    const documentFragment = document.createDocumentFragment()
-
     jobs.forEach((job) => {
       const li = document.createElement("li");
       const article = document.createElement("article");
@@ -26,9 +24,6 @@ fetch("./data.json")
           </div>
           <button class="button-apply-job">Aplicar</button>
         `;
-
-      documentFragment.appendChild(li)
+      jobListingSection.appendChild(li);
     });
-
-    jobListingSection.appendChild(documentFragment);
   });
