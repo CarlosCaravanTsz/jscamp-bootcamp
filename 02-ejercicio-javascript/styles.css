@@ -379,6 +379,7 @@ article {
   .search-bar {
     background: var(--input-bg);
     padding: 0.25rem 0.5rem;
+    position: relative;
   }
 
   .search-filters {
