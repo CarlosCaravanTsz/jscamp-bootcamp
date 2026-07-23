@@ -28,12 +28,18 @@ export function Pagination({ currentPage = 1, totalPages = 10, onPageChange }) {
     }
   }
 
+  const buildPageUrl = (page) => {
+    const url = new URL(window.location)
+    url.searchParams.set('page', page)
+    return `${url.pathname}?${url.searchParams.toString()}`
+  }
+
 
   return (
     <nav className={styles.pagination}>
       {!isFirstPage && (
         <a
-          href="#"
+          href={buildPageUrl(currentPage - 1)}
           onClick={handlePrevClick}
           aria-label="Ir a la página anterior de los resultados de búsqueda"
           title="Página anterior"
@@ -54,9 +60,10 @@ export function Pagination({ currentPage = 1, totalPages = 10, onPageChange }) {
         </a>
       )}
       {pages.map((page) => (
-        <a key={page}
+        <a
+          key={page}
           onClick={(event) => handleChangePage(event, page)}
-          href="#"
+          href={buildPageUrl(page)}
           className={currentPage === page ? styles.isActive : ""}
         >
           {page}
@@ -64,7 +71,7 @@ export function Pagination({ currentPage = 1, totalPages = 10, onPageChange }) {
       ))}
       {!isLastPage && (
         <a
-          href="#"
+          href={buildPageUrl(currentPage + 1)}
           onClick={handleNextClick}
           aria-label="Ir a la página siguiente de los resultados de búsqueda"
           title="Página siguiente"

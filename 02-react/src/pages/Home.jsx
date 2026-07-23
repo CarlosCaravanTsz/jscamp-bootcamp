@@ -1,16 +1,33 @@
+import { useRouter } from '../hooks/useRouter'
 export function HomePage() {
+
+  const {navigateTo} = useRouter()
+
+
+  const handleSearch = (e) => {
+    e.preventDefault;
+    const formData = new FormData(event.target)
+    const searchTerm = formData.get('search')
+
+    const url = searchTerm ? `/search?text=${encodeURIComponent(searchTerm)}`
+      : "/search"
+    
+    navigateTo(url);
+    
+  }
+
   return (
     <>
       <main>
         <section>
-          <img src="/background.webp" width="200" alt="Fondo de la imagen" />
+          <img src="/background.jpg" width="200" alt="Fondo de la imagen" />
           <h1>Encuentra el trabajo de tus sueños</h1>
           <p>
             Unete a la comunidad mas grande de desarrolladores y encuentra tu
             proxima oportunidad
           </p>
 
-          <form role="search">
+          <form role="search" onSubmit={handleSearch}>
             <div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -29,8 +46,10 @@ export function HomePage() {
                 <path d="M21 21l-6 -6" />
               </svg>
               <input
+                name="search"
+                id="search"
                 required
-                type="search"
+                type="text"
                 placeholder="Buscar empleos por titulo, habilidad o empresa"
               />
               <button type="submit">Buscar</button>

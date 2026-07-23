@@ -7,7 +7,7 @@ export function JobListings({jobs}) {
       <h2>Resultados de búsqueda</h2>
       <ul className="jobs-listings">
         {jobs.length === 0 ? (
-          <p>No hay trabajos disponibles</p>
+          <p style={{textAlign: 'center', padding: '1rem', textWrap: 'balance'}}>No hay trabajos disponibles</p>
         ) : (
           jobs.map((job) => <JobCard key={job.id} job={job} />)
         )}

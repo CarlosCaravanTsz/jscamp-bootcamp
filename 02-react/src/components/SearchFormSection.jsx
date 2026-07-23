@@ -1,32 +1,21 @@
 import { useId } from "react";
+import { useSearchForm } from "../hooks/useSearchForm";
 
 
-export function SearchFormSection({ onSearch, onTextFilter }) {
+export function SearchFormSection({ onSearch, onTextFilter, textToFilter }) {
   const locationId = useId();
   const experienceId = useId();
   const technologyId = useId();
   const textId = useId();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // event.target = elemento que recibe el evento
-    // event.currentTarget = elemento que esta escuchando el evento (al que se le agrega onChange)
-    const formData = new FormData(e.currentTarget); // OBTEN LA DATA DEL FORM
-
-    const filters = {
-      technology: formData.get(technologyId),
-      location: formData.get(locationId),
-      experience: formData.get(experienceId),
-    };
-    onSearch(filters);
-  };
-
-  const handleTextChange = (e) => {
-    const text = e.target.value;
-    onTextFilter(text);
-  };
-
+  const { handleSubmit, inputRef } = useSearchForm(
+    technologyId,
+    locationId,
+    experienceId,
+    textId,
+    onSearch,
+    onTextFilter,
+  );
 
   return (
     <section className="jobs-search">
@@ -52,19 +41,22 @@ export function SearchFormSection({ onSearch, onTextFilter }) {
           </svg>
 
           <input
-            name={textId}
-            id="empleos-search-input"
+            ref={inputRef}
             type="text"
+            name={textId}
+            //value={textToFilter}
+            id="empleos-search-input"
             placeholder="Buscar trabajos, empresas o habilidades"
-            onChange={handleTextChange}
+            defaultValue={textToFilter}
+            //onChange={handleSubmit}
           />
-          <button type="submit" style={{ position: "aboslute", right: "4px" }}>
+          {/* <button type="submit" style={{ position: "aboslute", right: "4px" }}>
             Buscar
-          </button>
+          </button> */}
         </div>
 
         <div className="search-filters">
-          <label htmlFor={locationId}>Tecnologia</label>
+          {/* <label htmlFor={locationId}>Tecnologia</label> */}
           <select name={technologyId} id={technologyId}>
             <option value="">Tecnología</option>
             <optgroup label="Tecnologías populares">
