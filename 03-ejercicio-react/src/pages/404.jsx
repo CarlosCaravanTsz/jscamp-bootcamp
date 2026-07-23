@@ -1,1 +1,3 @@
-/* Crea aquí tu archivo 404 */
+export function NotFoundPage() {
+  return <p>Lo sentimos, esta pagina no existe</p>
+}
