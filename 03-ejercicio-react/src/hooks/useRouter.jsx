@@ -1,5 +1,5 @@
 // hooks/useRouter.js
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 export function useRouter() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
   useEffect(() => {
