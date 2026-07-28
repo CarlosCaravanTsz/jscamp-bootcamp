@@ -12,6 +12,10 @@ export function useAPI({ queryParams }) {
         const response = await fetch(
           `https://jscamp-api.vercel.app/api/jobs?${queryParams}`,
         );
+
+        if(!response.ok) {
+          throw new Error(`No se pudo obtener los jobs de la API https://jscamp-api.vercel.app/api/jobs?${queryParams}`)
+        }
         const json = await response.json();
         setData(json);
       } catch (error) {
