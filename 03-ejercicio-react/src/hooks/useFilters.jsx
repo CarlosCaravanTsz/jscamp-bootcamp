@@ -4,7 +4,6 @@ import { useRouter } from "../hooks/useRouter";
 
 const RESULTS_PER_PAGE = 10;
 
-// Podemos pasar los valores iniciales de los `useState` complejos a variables:
 const getInitialFilters = () => {
   const params = new URLSearchParams(window.location.search)
   return {
@@ -22,7 +21,7 @@ const getInitialText = () => {
 const getInitialCurrentPage = () => {
   const params = new URLSearchParams(window.location.search);
   const page = Number(params.get('page')) || 1
-  return Number.isNaN(page) ? 1 : Math.max(page, 1) // <- Definimos que el número tenga que ser positivo >= 1
+  return Number.isNaN(page) ? 1 : Math.max(page, 1) 
 }
 
 export function useFilters() {
@@ -32,8 +31,6 @@ export function useFilters() {
 
   const {navigateTo} = useRouter();
 
-  // Cuando un valor que no es un estado cambia según el valor de un estado, entonces debemos envolverlo en un `useMemo`.
-  // `useMemo` lo que nos dice es: cada vez que algo cambie, quiero que modifiques el valor de la variable
   const params = useMemo(() => {
     const urlParams = new URLSearchParams();
 
@@ -52,20 +49,6 @@ export function useFilters() {
     return urlParams.toString() || ''
   }, [currentPage, filters, textToFilter])
 
-  // Ya esto no es necesario.
-  // Al sacarlo evitamos re renderizados, si cambia cualquier cosa del componente/hook, params se va a volver a crear.
-  // Con un `useMemo` tenemos todo más controlado.
-  /* if (textToFilter) params.append("text", textToFilter);
-  if (filters.technology) params.append("technology", filters.technology);
-  if (filters.location) params.append("type", filters.location);
-  if (filters.experience) params.append("level", filters.experience);
-
-  if (currentPage > 1) {
-    params.append("page", currentPage);
-    const offset = (currentPage - 1) * RESULTS_PER_PAGE;
-    params.append('limit', RESULTS_PER_PAGE)
-    params.append('offset',offset)
-  } */
   
   const pathToNavigate = params
     ? `${window.location.pathname}?${params}`
@@ -79,9 +62,6 @@ export function useFilters() {
   const { data: jobs = [], total = 0 } = data
 
   const totalPages = Math.ceil(total / RESULTS_PER_PAGE);
-
-
-
 
   /// FUNCIONES HANDLERS PARA ACTUALIZAR ESTADO
   const handlePageChange = (page) => {
