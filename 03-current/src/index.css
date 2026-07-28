@@ -21,15 +21,16 @@
 }
 
 @font-face {
-  font-family: 'Inter Variable';
+  font-family: "Inter Variable";
   font-style: normal;
   font-display: swap;
   font-weight: 100 900;
   src: url(https://cdn.jsdelivr.net/fontsource/fonts/inter:vf@latest/latin-wght-normal.woff2)
-    format('woff2-variations');
+    format("woff2-variations");
   unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
-    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
 }
 
 body {
@@ -89,8 +90,31 @@ h1 + p {
   margin-bottom: 2rem;
 }
 
-/* Header */
 header {
+  border-bottom: 1px solid var(--border);
+  background: var(--background);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+
+}
+
+
+  .rest-navbar {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .login-logout {
+    background-color: transparent;
+  }
+
+/* Header */
+.header-main-section {
   border-bottom: 1px solid var(--border);
   background: var(--background);
   padding: 0.5rem 1rem;
@@ -143,7 +167,6 @@ nav {
 header div a {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
-  background-color: #334155;
   color: var(--text-primary);
   display: inline-block;
   font-size: 0.875rem;
@@ -173,7 +196,11 @@ main > section:nth-child(1) {
     z-index: -1;
     left: 0;
     right: 0;
-    mask-image: linear-gradient(to bottom, rgba(16, 25, 34, 1) 5%, rgba(16, 25, 34, 0) 80%);
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(16, 25, 34, 1) 5%,
+      rgba(16, 25, 34, 0) 80%
+    );
   }
 }
 
@@ -203,7 +230,7 @@ form span {
   flex-shrink: 0;
 }
 
-form input[type='text'] {
+form input[type="text"] {
   flex: 1;
   background: transparent;
   border: none;
@@ -214,7 +241,7 @@ form input[type='text'] {
   font-family: inherit;
 }
 
-form input[type='text']::placeholder {
+form input[type="text"]::placeholder {
   color: #64748b;
 }
 
@@ -440,7 +467,6 @@ article {
   }
 }
 
-
 .button-apply-job {
   background: #09f;
 
@@ -448,10 +474,13 @@ article {
     background: #4caf50;
     pointer-events: none;
   }
+}
 
-  &.is-logout {
-    background: #94a3b8;
-    pointer-events: none;
-
-  }
+.header-nav-link.navLinkActive {
+  color: yellow;
+  pointer-events: none; /* Desactiva el clic */
+  opacity: 0.6; /* Se ve un poco más apagado */
+  user-select: none; /* Evita seleccionar el texto */
+  text-decoration: underline;
+  border-bottom: 2px solid currentColor;
 }
