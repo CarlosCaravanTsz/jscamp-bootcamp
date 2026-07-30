@@ -402,6 +402,10 @@ article {
     align-items: start;
     gap: 1rem;
 
+    &> div {
+      flex: 1;
+    }
+
     &.is-hidden {
       display: none;
     }

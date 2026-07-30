@@ -1,7 +1,14 @@
 import { useState } from 'react'
+import { Link } from './Link'
+import styles from "./JobCard.module.css";
+import { useAuthStore } from '../store/authStore';
+import { useFavoritesStore } from '../store/favoritesStore';
+
 
 export function JobCard({ job }) {
   const [isApplied, setIsApplied] = useState(false)
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
+  const { toggleFavorite, isFavorite } = useFavoritesStore();
 
   const handleApplyClick = () => {
     setIsApplied(true)
@@ -18,7 +25,9 @@ export function JobCard({ job }) {
       data-technology={job.data.technology}
     >
       <div>
-        <h3>{job.titulo}</h3>
+        <Link href={`/job/${job.id}`} className={styles.title}>
+          <h3>{job.titulo}</h3>
+        </Link>
         <small>
           {job.empresa} | {job.ubicacion}
         </small>
@@ -27,6 +36,10 @@ export function JobCard({ job }) {
       <button className={buttonClasses} onClick={handleApplyClick}>
         {buttonText}
       </button>
+      <button onClick={() => toggleFavorite(job.id)} disabled={!isLoggedIn}>
+        {isFavorite(job.id) ? "❤️" : "🤍"}
+      </button>
     </article>
-  )
+  );
 }
+

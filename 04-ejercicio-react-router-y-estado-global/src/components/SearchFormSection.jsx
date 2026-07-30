@@ -23,7 +23,7 @@ const useSearchForm = ({
     const filters = {
       technology: formData.get(idTechnology),
       location: formData.get(idLocation),
-      experienceLevel: formData.get(idExperienceLevel),
+      experience: formData.get(idExperienceLevel),
     }
 
     onSearch(filters)
