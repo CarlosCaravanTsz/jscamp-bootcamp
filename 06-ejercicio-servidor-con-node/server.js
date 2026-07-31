@@ -25,7 +25,6 @@ const server = createServer(async(req, res) => {
         const filteredUsersByName = name ? users.filter((user) => user.name.toLocaleLowerCase().includes(name.toLowerCase())) : users
         const filteredUsersByAge = filteredUsersByName.filter((user) => Number(minAge) <= Number(user.age) && user.age <= Number(maxAge))
         const paginatedUsers = filteredUsersByAge.slice(Number(offset), Number(offset)+Number(limit))
-
         return sendJson(res, 200, paginatedUsers);
 
       case '/health':
