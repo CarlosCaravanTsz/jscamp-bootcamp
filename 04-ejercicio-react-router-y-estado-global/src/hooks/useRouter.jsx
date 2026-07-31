@@ -7,7 +7,7 @@ export function useRouter() {
 
   const navigateTo = useCallback((path) => {
     navigate(path);
-  }, [navigate]); // <- Debemos agregar navigate como dependencia del useCallback, por más que no cambie nunca
+  }, [navigate]); 
 
 
   return {
