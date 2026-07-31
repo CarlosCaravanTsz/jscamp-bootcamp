@@ -14,9 +14,9 @@ function sendJson(res, statusCode, data) {
 
 const server = createServer(async(req, res) => {
 
-  const { method } = req
-  const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
-  const {pathname, searchParams} = parsedUrl
+  const { method ,url} = req
+  const [pathname, querystring] = url.split('?')
+  const searchParams = new URLSearchParams(querystring)
   
   if (method === 'GET') {
     switch (pathname) {
