@@ -17,22 +17,26 @@ const users = [
 ];
 
 const server = createServer(async (req, res) => {
-  const { method, url } = req;
+  const { method } = req;
+  const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+  const { pathname, searchParams } = parsedUrl;
 
-  console.log(method, url)
+  console.log(method, parsedUrl.href)
 
   if (method === "GET") {
-    if (url === "/users") {
-      return sendJson(res, 200, users);
+    if (pathname === "/users") {
+      const name = searchParams.get('name')
+      const result = name ? users.filter(u => u.name === name) : users
+      return sendJson(res, 200, result);
     }
 
-    if (url === "/health") {
+    if (pathname === "/health") {
       return sendJson(res, 200, { status: "ok", uptime: process.uptime() });
     }
   }
 
   if (method === 'POST') {
-    if (url === '/users') {
+    if (pathname === '/users') {
       const body = await json(req)
 
       if (!body || !body.name) {
