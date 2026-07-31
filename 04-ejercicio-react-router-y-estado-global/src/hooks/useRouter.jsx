@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useNavigate, useLocation } from 'react-router'
+import { useLocation, useNavigate } from 'react-router';
 
 export function useRouter() {
   const navigate = useNavigate(); // funcion para navegar
@@ -7,7 +7,7 @@ export function useRouter() {
 
   const navigateTo = useCallback((path) => {
     navigate(path);
-  }, []);
+  }, [navigate]); // <- Debemos agregar navigate como dependencia del useCallback, por más que no cambie nunca
 
 
   return {
