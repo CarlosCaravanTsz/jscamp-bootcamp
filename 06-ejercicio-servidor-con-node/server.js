@@ -2,7 +2,6 @@ import { randomUUID } from "node:crypto";
 import { createServer } from "node:http";
 import { json } from "node:stream/consumers";
 
-// Si no tenemos un archivo .env, se va a romper. Podemos evitar este error y usar el puerto 3000
 let port = 3000
 try {
   process.loadEnvFile();
@@ -27,18 +26,9 @@ const server = createServer(async (req, res) => {
   const searchParams = new URLSearchParams(querystring)
 
   if (method === 'GET') {
-    // Excelente uso de `switch`
     switch (pathname) {
       case '/users':
-        /* const {
-          name,
-          limit = CONST.DEFAULT_LIMIT,
-          offset = CONST.DEFAULT_OFFSET,
-          minAge,
-          maxAge
-        } = Object.fromEntries(searchParams) */
 
-        // Una mejora es aplicar el filtro solo si el parámetro viene
         const params = Object.fromEntries(searchParams);
         let result = users;
 
@@ -54,12 +44,7 @@ const server = createServer(async (req, res) => {
         if (params.limit || params.offset)
           result = result.slice(Number(params.offset ?? 0), Number(params.offset ?? 0) + Number(params.limit ?? users.length));
 
-        /* const filteredUsersByName =
-          name
-            ? users.filter((user) => user.name.toLocaleLowerCase().includes(name.toLowerCase()))
-            : users
-        const filteredUsersByAge = filteredUsersByName.filter((user) => Number(minAge) <= Number(user.age) && user.age <= Number(maxAge))
-        const paginatedUsers = filteredUsersByAge.slice(Number(offset), Number(offset) + Number(limit)) */
+      
         return sendJson(res, 200, result);
 
       case '/health':
