@@ -1,10 +1,12 @@
+import { randomUUID } from "node:crypto";
 import { createServer } from "node:http";
 import { json } from "node:stream/consumers";
-import { randomUUID } from "node:crypto";
 
-process.loadEnvFile();
-
-const port = process.env.PORT || 3000;
+let port = 3000
+try {
+  process.loadEnvFile();
+  port = process.env.PORT ?? port;
+} catch { }
 
 function sendJson(res, statusCode, data) {
   res.statusCode = statusCode;
@@ -12,42 +14,60 @@ function sendJson(res, statusCode, data) {
   res.end(JSON.stringify(data));
 }
 
-const server = createServer(async(req, res) => {
+const CONST = {
+  DEFAULT_LIMIT: 20,
+  DEFAULT_OFFSET: 0,
+}
 
-  const { method ,url} = req
+const server = createServer(async (req, res) => {
+
+  const { method, url } = req
   const [pathname, querystring] = url.split('?')
   const searchParams = new URLSearchParams(querystring)
-  
+
   if (method === 'GET') {
     switch (pathname) {
       case '/users':
-        const { name, limit = 20, offset = 0, minAge = 1, maxAge = 100 } = Object.fromEntries(searchParams)
-        const filteredUsersByName = name ? users.filter((user) => user.name.toLocaleLowerCase().includes(name.toLowerCase())) : users
-        const filteredUsersByAge = filteredUsersByName.filter((user) => Number(minAge) <= Number(user.age) && user.age <= Number(maxAge))
-        const paginatedUsers = filteredUsersByAge.slice(Number(offset), Number(offset)+Number(limit))
-        return sendJson(res, 200, paginatedUsers);
+
+        const params = Object.fromEntries(searchParams);
+        let result = users;
+
+        if (params.name)
+          result = result.filter(u => u.name.toLowerCase().includes(params.name.toLowerCase()));
+
+        if (params.minAge)
+          result = result.filter(u => u.age >= Number(params.minAge));
+
+        if (params.maxAge)
+          result = result.filter(u => u.age <= Number(params.maxAge));
+
+        if (params.limit || params.offset)
+          result = result.slice(Number(params.offset ?? 0), Number(params.offset ?? 0) + Number(params.limit ?? users.length));
+
+      
+        return sendJson(res, 200, result);
 
       case '/health':
-        return sendJson(res,200,{status: "ok", uptime: process.uptime()})
-        
+        return sendJson(res, 200, { status: "ok", uptime: process.uptime() })
+
       default:
-        return sendJson(res, 404, {error: "Not Found"})
+        return sendJson(res, 404, { error: "Not Found" })
 
     }
   }
 
   if (method === 'POST') {
     switch (pathname) {
-      case '/users': 
-        const {name, age} = await json(req)
+      case '/users':
+        const { name, age } = await json(req)
 
         if (!name || !age) return sendJson(res, 400, { error: 'Name and Age are required' })
-        
-        users.push({ id: randomUUID() ,name, age })
-        return sendJson(res, 201,{message: "Usuario creado"})
-      
+
+        users.push({ id: randomUUID(), name, age })
+        return sendJson(res, 201, { message: "Usuario creado" })
+
       default:
-        return sendJson(res, 404, {error: 'Not Found'})
+        return sendJson(res, 404, { error: 'Not Found' })
     }
   }
 
