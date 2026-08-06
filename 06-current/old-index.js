@@ -1,29 +1,8 @@
 import express from 'express'
 import { DEFAULTS } from './config.js'
-import jobs from './jobs.json' with { type: 'json' }
-import cors from 'cors'
+
 const PORT = process.env.PORT ?? DEFAULTS.PORT
 const app = express()
-
-const ACCEPTED_ORIGINS = [
-  'http://localhost:3000',
-  'http://localhost:5173',
-]
-
-// app.use(cors()) // <- solucion global
-
-app.use(cors({
-  origin: (origin, callback) => {
-    if (ACCEPTED_ORIGINS.includes(origin)) {
-      return callback(null, true)
-    }
-    return callback(new Error('Not allowed by CORS'))
-  }
-})) // Se puede validar no solo por origen si no tambien por header, cookie, etc.
-
-
-
-app.use(express.json()) // middleware para parsear el body de las requests a json, detecta cabeceras json
 
 app.use((req, res, next) => {
   const timeString = new Date().toLocaleTimeString()
@@ -31,6 +10,9 @@ app.use((req, res, next) => {
   next()
 }) // pasan por aqui todas las requests
 
+app.get('/', (req, res) => {
+  res.send('Hello World!!')
+})
 
 app.get('/health', (req, res) => {
   return res.json({
@@ -41,8 +23,7 @@ app.get('/health', (req, res) => {
 
 app.get('/jobs', async (req, res) => {
   // peticion a la bd
-
- // res.header('Access-Control-Allow-Origin', 'http://localhost:5173') <- solucion local
+  const { default: jobs } = await import('./jobs.json', { with: { type: 'json' } })
 
   const { text, title, level, limit = DEFAULTS.LIMIT_PAGINATION, technology, offset = DEFAULTS.LIMIT_OFFSET } = req.query  // QUERY STRING: LO QUE VA DESPUES DE ? EN LA URL
   
@@ -61,37 +42,21 @@ app.get('/jobs', async (req, res) => {
   const offsetNumber = Number(offset)
   const paginatedJobs = filteredJobs.slice(offsetNumber, offsetNumber + limitNumber)
 
-  return res.json({ data: paginatedJobs , total: filteredJobs.length, limit: limitNumber, offset: offsetNumber });
+  return res.json(paginatedJobs);
 })
 
 
-app.get('/jobs/:id', (req, res) => {
+app.get('/jobs:id', (req, res) => {
   const { id } = req.params // PARAMS SIEMPRE VIENEN EN EL PATH DE LA URL
+  const idNumber = Number(id)
 
-  const job = jobs.find(job => job.id === id)
-  
-  if (!job) {
-    return res.status(404).json({ message: 'Job not found' })
-  }
+  return res.json({job: { id: idNumber, title: 'Job with ID ' + id }})
 
-  return res.json(job)
 })
 
 
 app.post('/jobs', (req, res) => {
-
-  const { titulo, empresa, ubicacion, data } = req.body// BODY REQ != QUERY PARAMS AND PATH PARMS
-  
-  const newJob = {
-    id: crypto.randomUUID(),
-    titulo,
-    empresa,
-    ubicacion,
-    data,
-  }
-  jobs.push(newJob)
-
-  return req.status(201).json(newJob);
+  return res.json({ message: 'Job created' })
 })
 
 // Reemplazar un recurso completo
@@ -110,6 +75,36 @@ app.patch('/jobs/:id', (req, res) => {
 app.delete('/jobs/:id', (req, res) => {
   const { id } = req.params
   return res.json({ message: 'Job deleted with ID ' + id })
+})
+
+
+
+
+
+
+
+
+
+// Comodin
+app.get('/bb*bb', (req, res) => {
+  return res.send('bb*bb')
+})
+  
+  // Opcional
+  app.get('/a{b}cd', (req, res) => {
+    return res.send('a{b}cd')
+  })
+
+
+// RUTAS MAS LARGAS QUE NO SABES COMO TERMINAN
+app.get('/file/*filename', (req, res) => {
+  return res.send('file/*')
+})
+
+
+//Usar REGEX
+app.get('/.*fly$/', (req, res) => {
+  return res.json({ message: 'You are trying to access a file that ends with fly' })
 })
 
 

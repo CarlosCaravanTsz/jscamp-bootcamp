@@ -10,7 +10,8 @@ export function useAPI({ searchParams }) {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://jscamp-api.vercel.app/api/jobs?${searchParams.toString()}`,
+          // `https://jscamp-api.vercel.app/api/jobs?${searchParams.toString()}`,
+          `http://localhost:1234/jobs?${searchParams.toString()}`,
         );
         if(!response.ok) throw new Error(`No se pudo obtener los datos de https://jscamp-api.vercel.app/api/jobs?${searchParams.toString()}`)
 
