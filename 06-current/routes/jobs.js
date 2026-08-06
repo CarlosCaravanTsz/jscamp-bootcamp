@@ -14,3 +14,5 @@ jobsRouter.put("/:id", JobController.update)
 jobsRouter.patch("/:id", JobController.partialUpdate)
 
 jobsRouter.delete("/:id", JobController.delete);
+
+export { jobsRouter };

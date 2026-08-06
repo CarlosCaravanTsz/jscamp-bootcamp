@@ -1,31 +1,18 @@
-
-import {JobModel} from "../models/jobs.js";
+import { JobModel } from "../models/jobs.js";
 
 export class JobController {
   static async getAll(req, res) {
-    const {
-      text,
-      title,
-      level,
-      limit = DEFAULTS.LIMIT_PAGINATION,
-      technology,
-      offset = DEFAULTS.LIMIT_OFFSET,
-    } = req.query; // QUERY STRING: LO QUE VA DESPUES DE ? EN LA URL
+    const { text, title, level, limit, technology, offset } = req.query;
 
-    const paginatedJobs = await JobModel.getAll({text,title,level,limit,technology,offset});
+    const result = await JobModel.getAll({ text, title, level, limit, technology, offset });
 
-    return res.json({
-      total: filteredJobs.length,
-      limit: limitNumber,
-      offset: offsetNumber,
-      data: paginatedJobs,
-    });
+    return res.json(result);
   }
 
   static async getById(req, res) {
-    const { id } = req.params; // PARAMS SIEMPRE VIENEN EN EL PATH DE LA URL
+    const { id } = req.params;
 
-    const job = jobs.find((job) => job.id === id);
+    const job = await JobModel.getById({ id });
 
     if (!job) {
       return res.status(404).json({ message: "Job not found" });
@@ -48,6 +35,6 @@ export class JobController {
 
   static async delete(req, res) {
     const { id } = req.params;
-    return res.json({ message: "Job deleted with ID " + id })
+    return res.json({ message: "Job deleted with ID " + id });
   }
 }
