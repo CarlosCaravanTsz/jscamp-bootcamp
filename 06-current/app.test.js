@@ -7,7 +7,7 @@ let server
 const PORT = 2345 // PROVAR EN OTRO PUERTO
 const BASE_URL = `http://localhost:${PORT}`
 
-// se ejecuta antes de que se ejecuten los tests
+// ANTES de todos los tests, se ejecuta una vez para levantar el servidor
 before(async () => {
   return new Promise((resolve, reject) => {
     server = app.listen(PORT, () => resolve())
@@ -26,8 +26,7 @@ after(async () => {
   });
 });
 
-// primer test
-
+// DESCRIBE TEST Y PRIMER TEST
 describe('GET /jobs', () => {
   test('Debe responder 200 y un array de trabajos', async () => {
     const response = await fetch(`${BASE_URL}/jobs`)

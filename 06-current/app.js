@@ -21,7 +21,7 @@ app.get("/health", (req, res) => {
 
 if( !process.env.NODE_ENV) {
   app.listen(PORT, () => {
-    console.log(`Server levandato en localhost:${PORT}`);
+    console.log(`Server levantado en localhost:${PORT}`);
   });
 }
 
