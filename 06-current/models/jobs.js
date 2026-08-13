@@ -16,7 +16,7 @@ export class JobModel {
 
     if (technology) {
       filteredJobs = filteredJobs.filter((job) =>
-        job.tecnologias.includes(technology),
+        job.data.technology.includes(technology),
       );
     }
 

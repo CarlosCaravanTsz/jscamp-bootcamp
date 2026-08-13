@@ -19,7 +19,7 @@ app.get("/health", (req, res) => {
   });
 });
 
-if( process.env.NODE_ENV !== 'production') {
+if( !process.env.NODE_ENV) {
   app.listen(PORT, () => {
     console.log(`Server levandato en localhost:${PORT}`);
   });
