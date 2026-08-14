@@ -28,8 +28,8 @@ export class JobController {
 
   static async create(req, res) {
     const { titulo, empresa, ubicacion, descripcion, data, content } = req.body;
-    if (
-      Object.entries({
+
+    const hasMissingFields = Object.entries({
         titulo,
         empresa,
         ubicacion,
@@ -37,7 +37,9 @@ export class JobController {
         data,
         content,
       }).some(([_, value]) => value === undefined)
-    )
+
+    // Podemos pasar la validación a una variable para que sea más fácil de leer/entender el contenido del `if`. Siempre que hayan condicionales largos o complejos, es mejor pasarlo a una variable: así se hace fácil la lectura del if. Si luego queremos ver como se hace la condición, iremos a la variable, pero de primeras se ve mucho más claro.
+    if (hasMissingFields)
       return res.status(422).json({ message: "Missing required fields" });
     const newJob = await JobModel.create({
       titulo,
@@ -63,7 +65,7 @@ export class JobController {
         descripcion,
         data,
         content,
-      }).some(([_, value]) => value === undefined)
+      }).some(([_, value]) => value === undefined) // Podemos hacer lo mismo aquí
     )
       return res.status(422).json({ message: "Missing required fields" });
     
