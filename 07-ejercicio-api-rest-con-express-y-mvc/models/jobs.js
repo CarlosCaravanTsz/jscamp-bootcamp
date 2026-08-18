@@ -1,8 +1,6 @@
-import jobs from "../jobs.json" with { type: "json" };
 import { randomUUID } from "node:crypto";
 import { DEFAULTS } from "../config.js";
-/* Aquí deberá ir la lógica de tu modelo */
-/* Recuerda que el modelo SOLO debe manejar la lógica de los datos, en este caso nuestro JSON */
+import jobs from "../jobs.json" with { type: "json" };
 export class JobModel {
   static async getAll({
     text,
@@ -15,6 +13,10 @@ export class JobModel {
   }) {
     const limitNumber = Number(limit)
     const offsetNumber = Number(offset)
+
+    const normalizedLimit = Number.isInteger(limitNumber) && limitNumber > 0 ? limitNumber : DEFAULTS.LIMIT_PAGINATION
+    const normalizedOffset = Number.isInteger(offsetNumber) && offsetNumber >= 0 ? offsetNumber : DEFAULTS.LIMIT_OFFSET
+
     let results = jobs
 
     if (text) results = results.filter(job => job.titulo.toLowerCase().includes(text.toLowerCase()) || job.descripcion.toLowerCase().includes(text.toLowerCase()))

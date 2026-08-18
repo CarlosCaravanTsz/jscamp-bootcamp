@@ -28,8 +28,8 @@ export class JobController {
 
   static async create(req, res) {
     const { titulo, empresa, ubicacion, descripcion, data, content } = req.body;
-    if (
-      Object.entries({
+
+    const hasMissingFields = Object.entries({
         titulo,
         empresa,
         ubicacion,
@@ -37,7 +37,8 @@ export class JobController {
         data,
         content,
       }).some(([_, value]) => value === undefined)
-    )
+
+    if (hasMissingFields)
       return res.status(422).json({ message: "Missing required fields" });
     const newJob = await JobModel.create({
       titulo,
@@ -55,17 +56,17 @@ export class JobController {
   static async update(req, res) {
     const { id } = req.params;
     const { titulo, empresa, ubicacion, descripcion, data, content } = req.body;
-    if (
-      Object.entries({
+
+    const hasMissingFields = Object.entries({
         titulo,
         empresa,
         ubicacion,
         descripcion,
         data,
         content,
-      }).some(([_, value]) => value === undefined)
-    )
-      return res.status(422).json({ message: "Missing required fields" });
+      }).some(([_, value]) => value === undefined) 
+    
+    if (hasMissingFields) return res.status(422).json({ message: "Missing required fields" });
     
     const updatedJob = await JobModel.update(id, {
       titulo,
