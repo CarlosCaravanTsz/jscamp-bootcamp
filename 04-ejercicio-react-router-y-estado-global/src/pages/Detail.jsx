@@ -30,10 +30,20 @@ export default function JobDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
-  const isFavorite = useFavoritesStore((state) => state.isFavorite(jobId));
-  const toggleFavorite   = useFavoritesStore( (state) => state.toggleFavorite)
+  const [isApplied, setIsApplied] = useState(false);
 
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const isFavorite = useFavoritesStore((state) => state.isFavorite(jobId));
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+
+  const buttonText = isApplied ? "Aplicado" : "Aplicar";
+  const buttonClasses = isApplied
+    ? "button-apply-job is-applied"
+    : "button-apply-job";
+
+  const handleApplyClick = () => {
+    setIsApplied(true);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -95,7 +105,9 @@ export default function JobDetail() {
           {job.empresa} · {job.ubicacion}{" "}
         </p>
       </header>
-      <button className={styles.applyButton}>Aplicar ahora</button>
+      <button className={buttonClasses} onClick={handleApplyClick}>
+        {buttonText}
+      </button>
       <button onClick={() => toggleFavorite(jobId)} disabled={!isLoggedIn}>
         {isFavorite ? "❤️" : "🤍"}
       </button>

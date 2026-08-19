@@ -39,7 +39,7 @@ export const useFilters = () => {
       if (textToFilter) urlParams.append("text", textToFilter);
       if (filters.technology)
         urlParams.append("technology", filters.technology);
-      if (filters.location) urlParams.append("type", filters.location);
+      if (filters.location) urlParams.append("modalidad", filters.location);
       if (filters.experience) urlParams.append("level", filters.experience);
       if (currentPage > 1) {
         urlParams.append("page", currentPage);

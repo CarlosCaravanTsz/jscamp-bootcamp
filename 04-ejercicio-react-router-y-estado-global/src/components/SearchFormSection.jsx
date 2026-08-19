@@ -1,4 +1,4 @@
-import { useId, useState, useRef } from 'react'
+import { useId, useState, useRef } from "react";
 
 const useSearchForm = ({
   idTechnology,
@@ -8,55 +8,55 @@ const useSearchForm = ({
   onSearch,
   onTextFilter,
 }) => {
-  const timeoutId = useRef(null)
-  const [searchText, setSearchText] = useState('')
+  const timeoutId = useRef(null);
+  const [searchText, setSearchText] = useState("");
 
   const handleSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    const formData = new FormData(event.currentTarget)
+    const formData = new FormData(event.currentTarget);
 
     if (event.target.name === idText) {
-      return // ya lo manejamos en onChange
+      return; // ya lo manejamos en onChange
     }
 
     const filters = {
       technology: formData.get(idTechnology),
       location: formData.get(idLocation),
       experience: formData.get(idExperienceLevel),
-    }
+    };
 
-    onSearch(filters)
-  }
+    onSearch(filters);
+  };
 
   const handleTextChange = (event) => {
-    const text = event.target.value
-    setSearchText(text) // actualizamos el input inmediatamente
+    const text = event.target.value;
+    setSearchText(text); // actualizamos el input inmediatamente
 
     // Debounce: Cancelar el timeout anterior
     if (timeoutId.current) {
-      clearTimeout(timeoutId.current)
+      clearTimeout(timeoutId.current);
     }
 
     timeoutId.current = setTimeout(() => {
-      onTextFilter(text)
-    }, 500)
-  }
+      onTextFilter(text);
+    }, 500);
+  };
 
   return {
     searchText,
     handleSubmit,
     handleTextChange,
-  }
-}
+  };
+};
 
 export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
-  const idText = useId()
-  const idTechnology = useId()
-  const idLocation = useId()
-  const idExperienceLevel = useId()
+  const idText = useId();
+  const idTechnology = useId();
+  const idLocation = useId();
+  const idExperienceLevel = useId();
 
-  const inputRef = useRef()
+  const inputRef = useRef();
 
   const { handleSubmit, handleTextChange } = useSearchForm({
     idTechnology,
@@ -65,14 +65,14 @@ export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
     idText,
     onSearch,
     onTextFilter,
-  })
+  });
 
   const handleClearInput = (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    inputRef.current.value = ''
-    onTextFilter('')
-  }
+    inputRef.current.value = "";
+    onTextFilter("");
+  };
 
   return (
     <section className="jobs-search">
@@ -133,7 +133,7 @@ export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
           <select name={idLocation} id="filter-location">
             <option value="">Ubicación</option>
             <option value="remoto">Remoto</option>
-            <option value="cdmx">Ciudad de México</option>
+            <option value="cdmx">Ciudad de Mexico</option>
             <option value="guadalajara">Guadalajara</option>
             <option value="monterrey">Monterrey</option>
             <option value="barcelona">Barcelona</option>
@@ -151,5 +151,5 @@ export function SearchFormSection({ onTextFilter, onSearch, initialText }) {
 
       <span id="filter-selected-value"></span>
     </section>
-  )
+  );
 }

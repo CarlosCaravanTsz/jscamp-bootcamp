@@ -9,7 +9,6 @@ export class JobModel {
     technology,
     modalidad,
     level,
-    ubicacion,
   }) {
     const limitNumber = Number(limit)
     const offsetNumber = Number(offset)
@@ -23,7 +22,6 @@ export class JobModel {
     if (technology) results = results.filter(job => job.data.technology.some( tech => tech.toLowerCase() === technology.toLowerCase()))
     if (modalidad) results = results.filter(job => job.data.modalidad.toLowerCase() === modalidad.toLowerCase())
     if (level) results = results.filter(job => job.data.nivel.toLowerCase() === level.toLowerCase())
-    if (ubicacion) results = results.filter(job => job.ubicacion.toLowerCase() === ubicacion.toLowerCase())
     
     results = results.slice(offsetNumber, offsetNumber + limitNumber);
     
