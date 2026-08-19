@@ -7,6 +7,7 @@ export const jobsRouter = Router()
 jobsRouter.get('/', JobController.getAll)
 jobsRouter.get('/:id', JobController.getId)
 jobsRouter.post("/", validateCreate, JobController.create);
-jobsRouter.put('/:id', validateUpdate, JobController.update)
+// PUT reemplaza todos los campos, por eso validamos el job completo (validateCreate) y no el parcial
+jobsRouter.put('/:id', validateCreate, JobController.update)
 jobsRouter.patch("/:id", validateUpdate, JobController.partialUpdate);
 jobsRouter.delete('/:id', JobController.delete)
