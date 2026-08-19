@@ -1,4 +1,4 @@
-import { validateJob, validatePartialJob } from "../schemas/jobs";
+import { validateJob, validatePartialJob } from "../schemas/jobs.js";
 
 export const validateCreate = (req, res, next) => {
   const result = validateJob(req.body);
