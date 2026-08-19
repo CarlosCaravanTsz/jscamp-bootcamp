@@ -22,7 +22,6 @@ const jobSchema = z.object({
   data: dataSchema
 })
 
-// La validacion parcial vuelve opcional cada campo, y no exigir que sean todos los cambios
 const partialJobSchema = jobSchema.partial().extend({
   data: dataSchema.partial().optional()
 })

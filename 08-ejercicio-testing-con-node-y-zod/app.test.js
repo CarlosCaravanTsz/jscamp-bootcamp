@@ -7,7 +7,7 @@ let server;
 const PORT = 5678;
 const BASE_URL = `http://localhost:${PORT}`;
 
-/* En todos los tests repetimos las mismas consultas, fetch y asserts del status: así que creamos handlers para poder reutilizar esto  */
+
 const handleGetResponseAndCheckStatus = async (path, expectedStatus) => {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   const response = await fetch(`${BASE_URL}${normalizedPath}`);
@@ -75,7 +75,6 @@ after(async () => {
 
 describe("GET /jobs", () => {
   test("Debe responder con 200 y un array de trabajos", async () => {
-    /* Aplicamos el handler para que quede más limpio el test */
     const response = await handleGetResponseAndCheckStatus("jobs", 200);
     const json = await response.json();
     assert.ok(Array.isArray(json.data), "La respuesta debe ser un array de jobs");
@@ -85,7 +84,6 @@ describe("GET /jobs", () => {
     const tech = "react";
     const response = await handleGetResponseAndCheckStatus(`jobs?technology=${tech}`, 200);
     const json = await response.json();
-    /* Hacemos un chequeo de los resultados, evaluando que sea >0 */
     assert.ok(json.data.length > 0, "Debe haber al menos un resultado");
     assert.ok(
       json.data.every((job) => job.data.technology.includes(tech)),
@@ -128,7 +126,6 @@ describe("POST /jobs", () => {
     const response = await handlePostResponseAndCheckStatus("jobs", 201, newJob);
     const json = await response.json();
 
-    /* Muy bien, esto luego con zod puede ser un poco más fácil de leer */
     assert.match(
       json.id,
       /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
@@ -266,7 +263,6 @@ describe("PATCH /jobs/:id", () => {
       (res) => res.json(),
     );
 
-    /* Muy bien implementado, de esta manera queda más claro para leer */
     assert.strictEqual(after.titulo, updateJob.titulo);
     assert.strictEqual(after.empresa, updateJob.empresa);
     assert.strictEqual(after.ubicacion, updateJob.ubicacion);
