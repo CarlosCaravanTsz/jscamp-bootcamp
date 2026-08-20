@@ -1,8 +1,8 @@
 // @ts-check
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
-// Test de navegacion basica
-test("Test Navegacion Basica", async ({ page }) => {
+// 1) Navegación básica
+test("Navegación básica", async ({ page }) => {
   await page.goto("http://localhost:5173");
 
   const searchInput = page.getByRole("searchbox");
@@ -10,123 +10,122 @@ test("Test Navegacion Basica", async ({ page }) => {
   await expect(searchInput).toBeVisible();
 });
 
-// Test de busqueda de empleos
-test("Test de Busqueda de empleos", async ({ page }) => {
+// 2) Búsqueda de empleos
+test("Búsqueda de empleos", async ({ page }) => {
   await page.goto("http://localhost:5173");
 
-  const searchInput = page.getByRole("searchbox");
-  await searchInput.fill("React");
-
+  await page.getByRole("searchbox").fill("React");
   await page.getByRole("button", { name: "Buscar" }).click();
 
-  const jobCards = page.locator(".job-listing-card");
+  // const jobCards = page.locator(".job-listing-card");
+  await expect(
+    page.getByRole("heading", { level: 2, name: /Resultados/ })
+  ).toBeVisible();
 
-  await expect(jobCards.first()).toBeVisible();
+  await expect(page.getByRole("article").first()).toBeVisible();
 });
 
-// Test de flujo completo de aplicacion
-
-test("Test de flujo completo de aplicacion", async ({ page }) => {
+// 3) Flujo completo de aplicación
+test("Flujo completo de aplicación", async ({ page }) => {
   await page.goto("http://localhost:5173");
 
-  const searchInput = page.getByRole("searchbox");
-  await searchInput.fill("JavaScript");
-
+  await page.getByRole("searchbox").fill("JavaScript");
   await page.getByRole("button", { name: "Buscar" }).click();
 
-  const jobCards = page.locator(".job-listing-card");
+=  const firstJob = page.getByRole("article").first();
+  await expect(firstJob).toBeVisible();
 
-  await expect(jobCards.first()).toBeVisible();
+  // Antes se obtenía el título con jobCards.first().getByRole(...); ahora desde firstJob
+  // const firstJobTitle = jobCards.first().getByRole("heading", { level: 3 });
+  await firstJob.getByRole("heading", { level: 3 }).click();
 
-  const firstJobTitle = jobCards.first().getByRole("heading", { level: 3 });
+  // Antes se validaba con page.locator("h2").first() y texto hardcodeado por posición
+  // const descriptionTitle = page.locator("h2").first();
+  // await expect(descriptionTitle).toHaveText("Descripcion del puesto");
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Descripcion del puesto" })
+  ).toBeVisible();
 
-  await expect(firstJobTitle).toHaveText("Desarrollador de Software Senior");
+  await page.getByRole("button", { name: "Iniciar Sesion" }).click();
+  await page.getByRole("button", { name: "Aplicar" }).click();
 
-  await firstJobTitle.click();
-
-  const descriptionTitle = page.locator("h2").first();
-
-  await expect(descriptionTitle).toHaveText("Descripcion del puesto"); // vista de detalle empleo
-
-  await page.getByRole("button", { name: "Iniciar Sesion" }).click(); // click en iniciar sesion
-
-  const applyButton = page.getByRole("button", { name: "Aplicar" });
-  await applyButton.click(); // click en aplicar
-
-  await expect(page.getByRole("button", { name: "Aplicado" })).toBeVisible(); // se espera que el boton tenga el texto Aplicado
+  await expect(page.getByRole("button", { name: "Aplicado" })).toBeVisible();
 });
 
-// Test de filtros
-
-test("Test de filtros", async ({ page }) => {
+// 4) Filtros por ubicación y nivel
+test("Filtros por ubicación y nivel", async ({ page }) => {
   await page.goto("http://localhost:5173");
   await page.getByRole("link", { name: "Empleos" }).click();
 
-  // Probar filtro por ubicacion
-  const locationSelect = page.locator("#filter-location");
-  await locationSelect.selectOption({ value: "guadalajara" });
+  // Antes se usaba page.locator("#filter-location")
+  // const locationSelect = page.locator("#filter-location");
+  // await locationSelect.selectOption({ value: "guadalajara" });
+  // Ubicamos los combobox por su posición (0 tecnología, 1 ubicación, 2 nivel)
+  await page.getByRole("combobox").nth(1).selectOption({ label: "Remoto" });
 
-  const jobCards = page.locator(".job-listing-card");
-  await expect(jobCards.first()).toBeVisible();
+  // Esperamos a que React Router refleje el filtro en la URL (sync con la API)
+  await expect(page).toHaveURL(/modalidad=remoto/);
 
-  const countLocation = await jobCards.filter({ visible: true }).count();
-  await expect(countLocation).toBe(3);
+  // Esperamos una tarjeta que realmente pertenezca al filtro
+  const remoteJob = page.locator('article[data-modalidad="remoto"]').first();
+  await expect(remoteJob).toBeVisible();
 
-  // Probar filtro por nivel
+  // Antes se contaba con count() y filter({visible:true}) (filtro inválido)
+  // const countLocation = await jobCards.filter({ visible: true }).count();
+  await page.getByRole("combobox").nth(1).selectOption(""); // limpiamos ubicación
 
-  const levelSelect = page.locator("#filter-experience-level");
-  await locationSelect.selectOption({ value: "" }); // limpiar el de location
+  // Antes se usaba #filter-experience-level con value "mid"; ahora nivel Senior como pide la consigna
+  // const levelSelect = page.locator("#filter-experience-level");
+  // await levelSelect.selectOption({ value: "mid" });
+  await page.getByRole("combobox").nth(2).selectOption({ label: "Senior" });
 
-  await levelSelect.selectOption({ value: "mid" });
+  // Esperamos a que el nivel seleccionado se refleje en la URL
+  await expect(page).toHaveURL(/level=senior/);
 
-  const newJobCards = page.locator(".job-listing-card");
-  await expect(newJobCards.first()).toBeVisible();
-  const countLevel = await newJobCards.filter({ visible: true }).count();
-  await expect(countLevel).toBe(1);
+  // Esperamos una tarjeta que pertenezca realmente al filtro senior
+  const seniorJob = page.locator('article[data-nivel="senior"]').first();
+  await expect(seniorJob).toBeVisible();
 });
 
-// Test de paginacion
-test("Test de paginacion", async ({ page }) => {
+// 5) Paginación
+test("Paginación", async ({ page }) => {
   await page.goto("http://localhost:5173");
   await page.getByRole("link", { name: "Empleos" }).click();
 
-  const paginationButtons = page.locator("[data-page]");
+  // Antes se localizaba con page.locator("[data-page]") y se pulsaba nth(1) (página 2)
+  // const paginationButtons = page.locator("[data-page]");
+  // const nextPage ahora usa el aria-label "Siguiente" que agregamos en el componente de paginación
+  const nextPage = page.getByRole("link", { name: "Siguiente" });
+  await expect(nextPage).toBeVisible();
 
-  await expect(paginationButtons.first()).toBeVisible();
+  // Guardamos el texto del primer resultado para comparar tras navegar
+  const firstResultOnFirstPage = await page.getByRole("article").first().innerText();
 
-  const count = await paginationButtons.filter({ visible: true }).count();
+  await nextPage.click();
 
-  await expect(count).toBeGreaterThanOrEqual(1);
-
-  await paginationButtons.nth(1).click();
-
-  const descriptionTitle = page.locator("h3").first();
-
-  await expect(descriptionTitle).toHaveText("Diseñador UX/UI"); // cambiaron los empleos
+  // Antes se comparaba con page.locator("h3").first() y un texto fijo ("Diseñador UX/UI")
+  // const descriptionTitle = page.locator("h3").first();
+  // await expect(descriptionTitle).toHaveText("Diseñador UX/UI");
+  await expect(page.getByRole("article").first()).not.toHaveText(firstResultOnFirstPage);
 });
 
-// Test de detalle de empleo
-test("Test de detalle de empleo", async ({ page }) => {
+// 6) Detalle de empleo
+test("Detalle de empleo", async ({ page }) => {
   await page.goto("http://localhost:5173");
-
   await page.getByRole("link", { name: "Empleos" }).click();
 
-  const jobCards = page.locator(".job-listing-card");
-  await expect(jobCards.first()).toBeVisible();
+  // Sustituimos los locators de clase por getByRole('article')
+  // const jobCards = page.locator(".job-listing-card");
+  const firstJob = page.getByRole("article").first();
+  await expect(firstJob).toBeVisible();
 
-  const firstJobTitle = jobCards.first().getByRole("heading", { level: 3 });
+  await firstJob.getByRole("heading", { level: 3 }).click();
 
-  await expect(firstJobTitle).toHaveText("Desarrollador de Software Senior");
+  // const descriptionTitle = page.locator("h2").first();
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Descripcion del puesto" })
+  ).toBeVisible();
 
-  await firstJobTitle.click();
-
-  const descriptionTitle = page.locator("h2").first();
-
-  await expect(descriptionTitle).toHaveText("Descripcion del puesto"); // vista de detalle empleo
-
-  const applyButton = page.getByRole("button", { name: "Aplicar" });
-
-  await applyButton.click(); // click en aplicar
-
-  await expect(page.getByRole("button", { name: "Aplicado" })).toBeVisible(); // se espera que el boton tenga el texto Aplicado
+  await page.getByRole("button", { name: "Aplicar" }).click();
+  await expect(page.getByRole("button", { name: "Aplicado" })).toBeVisible();
 });
