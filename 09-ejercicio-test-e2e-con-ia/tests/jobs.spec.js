@@ -2,7 +2,6 @@
 import { expect, test } from "@playwright/test";
 
 // 1) Navegación básica
-// Quitamos el prefijo "Test" del nombre, queda más limpio
 test("Navegación básica", async ({ page }) => {
   await page.goto("http://localhost:5173");
 
@@ -15,17 +14,14 @@ test("Navegación básica", async ({ page }) => {
 test("Búsqueda de empleos", async ({ page }) => {
   await page.goto("http://localhost:5173");
 
-  // Encadenamos acciones en una sola línea, lo que hiciste no está mal, es solo para tener un ejemplo diferente
   await page.getByRole("searchbox").fill("React");
   await page.getByRole("button", { name: "Buscar" }).click();
 
-  // Sustituimos el locator CSS por getByRole + name del heading h2
   // const jobCards = page.locator(".job-listing-card");
   await expect(
     page.getByRole("heading", { level: 2, name: /Resultados/ })
   ).toBeVisible();
 
-  // Verificamos el primer resultado con el role article en vez del selector de clase
   await expect(page.getByRole("article").first()).toBeVisible();
 });
 
@@ -36,10 +32,7 @@ test("Flujo completo de aplicación", async ({ page }) => {
   await page.getByRole("searchbox").fill("JavaScript");
   await page.getByRole("button", { name: "Buscar" }).click();
 
-  // Reemplazamos page.locator(".job-listing-card") por getByRole('article')
-  // const jobCards = page.locator(".job-listing-card");
-  // await expect(jobCards.first()).toBeVisible();
-  const firstJob = page.getByRole("article").first();
+=  const firstJob = page.getByRole("article").first();
   await expect(firstJob).toBeVisible();
 
   // Antes se obtenía el título con jobCards.first().getByRole(...); ahora desde firstJob
