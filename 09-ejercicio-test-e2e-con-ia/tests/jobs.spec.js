@@ -32,7 +32,10 @@ test("Flujo completo de aplicación", async ({ page }) => {
   await page.getByRole("searchbox").fill("JavaScript");
   await page.getByRole("button", { name: "Buscar" }).click();
 
-=  const firstJob = page.getByRole("article").first();
+  // Reemplazamos page.locator(".job-listing-card") por getByRole('article')
+  // const jobCards = page.locator(".job-listing-card");
+  // await expect(jobCards.first()).toBeVisible();
+  const firstJob = page.getByRole("article").first();
   await expect(firstJob).toBeVisible();
 
   // Antes se obtenía el título con jobCards.first().getByRole(...); ahora desde firstJob
