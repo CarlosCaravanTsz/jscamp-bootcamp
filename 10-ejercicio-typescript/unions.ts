@@ -37,7 +37,7 @@ export function safeSearch(jobs: Job[], searchTerm: string): SearchResult {
 export function displaySearchResults(result: SearchResult): void {
   if (result.success) {
     console.log(`Encontrados ${result.count} empleos:`)
-    result.jobs.forEach((job: any) => {
+    result.jobs.forEach((job: Job) => {
       console.log(`- ${job.title} en ${job.company}`)
     })
   } else {

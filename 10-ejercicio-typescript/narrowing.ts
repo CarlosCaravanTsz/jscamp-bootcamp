@@ -20,11 +20,11 @@ export function isQualified(candidate: Candidate, job: Job): boolean {
   // Verificar si tiene al menos una tecnología requerida
   const hasRequiredSkill = job.technologies?.some((tech: Technology) => candidate.skills.includes(tech))
 
-  return hasRequiredSkill ? true : false
+  return !!hasRequiredSkill
 }
 
 // Función con type guards - formatear salario
-export function formatSalary(salary?: number | undefined): string {
+export function formatSalary(salary?: number ): string {
   if (salary === undefined) {
     return 'Salario no especificado'
   }
