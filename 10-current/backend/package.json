@@ -1,9 +1,10 @@
 {
-  "name": "07-ejercicio-api-rest-con-express-y-mvc",
+  "name": "backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "watch": "node --watch app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -11,7 +12,14 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "ai": "^7.0.71",
+    "better-sqlite3": "^13.0.3",
     "cors": "2.8.6",
-    "express": "5.2.1"
+    "express": "5.2.1",
+    "express-rate-limit": "^8.6.2",
+    "openai": "^7.5.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0"
   }
 }

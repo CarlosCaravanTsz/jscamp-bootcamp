@@ -6,6 +6,11 @@ import { Link } from "../components/Link";
 import snarkdown from "snarkdown";
 import { useFavoritesStore } from "../store/favoritesStore";
 import { useAuthStore } from "../store/authStore";
+import { useAISummary } from "../hooks/useAISummary";
+import {Streamdown} from 'streamdown'
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 function JobSection({ title, contenido }) {
   const html = snarkdown(contenido);
@@ -21,6 +26,29 @@ function JobSection({ title, contenido }) {
     </section>
   );
 }
+
+function AISummary({ jobId }) {
+
+  const { summary, loading, generateSummary } = useAISummary(jobId);
+
+  if (summary) {
+    return (
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Resumen generado por IA</h2>
+        <div className={styles.sectionContent}>
+          <Streamdown isAnimating={loading}>{summary}</Streamdown>
+        </div>
+      </section>
+    )
+  }
+
+  return (
+    <button onClick={generateSummary} disabled={loading} className={styles.applyButton}>
+      {loading ? 'Generando resumen...' : 'Generar resumen con IA'}
+    </button>
+  )
+}
+
 
 export default function JobDetail() {
   const { jobId } = useParams();
@@ -47,7 +75,7 @@ export default function JobDetail() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`https://jscamp-api.vercel.app/api/jobs/${jobId}`)
+    fetch(`${API_URL}/jobs/${jobId}`)
       .then((res) => {
         if (!res.ok) {
           navigate("/not-found");
@@ -74,6 +102,7 @@ export default function JobDetail() {
       </div>
     );
   }
+  console.log(job)
 
   if (error || !job) {
     return (
@@ -96,32 +125,33 @@ export default function JobDetail() {
             Empleos
           </Link>
           <span className={styles.breadcrumbSeparator}>/</span>
-          <span className={styles.breadcrumbCurrent}>{job.titulo}</span>
+          <span className={styles.breadcrumbCurrent}>{job.job.titulo}</span>
         </nav>
       </div>
       <header className={styles.header}>
-        <h1 className={styles.title}>{job.titulo}</h1>
+        <h1 className={styles.title}>{job.job.titulo}</h1>
         <p className={styles.meta}>
-          {job.empresa} · {job.ubicacion}{" "}
+          {job.job.empresa} · {job.job.ubicacion}{" "}
         </p>
       </header>
       <button className={buttonClasses} onClick={handleApplyClick}>
         {buttonText}
       </button>
+      <AISummary jobId={jobId} />
       <button onClick={() => toggleFavorite(jobId)} disabled={!isLoggedIn}>
         {isFavorite ? "❤️" : "🤍"}
       </button>
 
       <JobSection
         title="Descripcion del puesto"
-        contenido={job.content.description}
+        contenido={job.job.content.description}
       />
       <JobSection
         title="Responsabilidades"
-        contenido={job.content.responsibilities}
+        contenido={job.job.content.responsibilities}
       />
-      <JobSection title="Requisitos" contenido={job.content.requirements} />
-      <JobSection title="Acerca de la empresa" contenido={job.content.about} />
+      <JobSection title="Requisitos" contenido={job.job.content.requirements} />
+      <JobSection title="Acerca de la empresa" contenido={job.job.content.about} />
     </div>
   );
 }

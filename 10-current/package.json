@@ -5,7 +5,7 @@
   "main": "index.js",
   "workspaces": [
     "backend",
-    "frontend" 
+    "frontend"
   ],
   "scripts": {
     "dev:backend": "npm run watch --workspace=backend",

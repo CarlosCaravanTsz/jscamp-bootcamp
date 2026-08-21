@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import {db} from '../db/database.ts'
 import { DEFAULTS } from "../config.js";
 import jobs from "../jobs.json" with { type: "json" };
 export class JobModel {
@@ -10,6 +11,56 @@ export class JobModel {
     modalidad,
     level,
   }) {
+
+    let query = `
+      SELECT j.*, GROUP_CONCAT(jt.technology) AS technologies
+      FROM jobs j
+      JOIN job_technologies jt ON j.id = jt.job_id
+    `
+
+    const conditions: string[] = []
+    const params: unknown[] = []
+
+    if (technology) {
+      conditions.push(`j.id IN (SELECT job_id FROM job_technologies WHERE technology = ?)`)
+      params.push(technology)
+    }
+
+    if (modalidad) {
+      conditions.push(``)
+      params.push(modalidad)
+    }
+
+    if (level) {
+      conditions.push(``)
+      params.push(level)
+    }
+
+    if (conditions.length > 0) {
+      query += 'WHERE' + conditions.join(' AND ')
+    }
+
+    query += 'GROUP BY j.id'
+
+    const rows = db.prepare(query).all(...params)
+    console.log(rows)
+
+    return rows.map(row => ({
+      id: row.id,
+      title: row.title,
+      company: row.company,
+      location: row.location,
+      description: row.description,
+      data: {
+        technology: row.technologies.split(','),
+        modalidad: row.modalidad,
+        level:  row.level
+      }
+    }))
+
+
+
+
     const limitNumber = Number(limit)
     const offsetNumber = Number(offset)
 
