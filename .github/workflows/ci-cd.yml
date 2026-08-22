@@ -7,23 +7,17 @@ on:
     branches: [main]
 
 jobs:
-  ci:
+  frontend-lint:
     runs-on: ubuntu-24.04
-    defaults:
-      run:
-        working-directory: 12-current
-      
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      
+
       - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: 
+        uses: ./github/actions/setup-npm.yml
+      
+      - name: Lint
+        run: |
+          cd 12-current
+          
   
