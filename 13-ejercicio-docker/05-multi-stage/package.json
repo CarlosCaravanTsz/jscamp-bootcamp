@@ -11,6 +11,6 @@
     "canvas-confetti": "1.9.3"
   },
   "devDependencies": {
-    "esbuild": "0.24.0"
+    "esbuild": "0.28.1"
   }
 }
