@@ -1,0 +1,13 @@
+name: 03 - Schedule
+on:
+  workflow_dispatch:
+    
+  schedule:
+    - cron: '0 9 * * MON'
+      
+jobs:
+  print:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Print
+        run: echo "Hola desde Github Actions"

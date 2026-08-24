@@ -1,0 +1,33 @@
+name: 04 - Events
+on:
+  workflow_dispatch:
+    
+  issue_comment:
+    types:
+      - created
+  
+  issues:
+    types:
+      - opened
+      - reopened
+      - assigned
+
+  pull_request_review_comment:
+    
+jobs:
+  inspect-event:
+    runs-on: ubuntu-24.04
+    permissions:
+      issues:
+        write
+    steps:
+      - name: Imprimir
+        run: |
+          echo "${{github.event_name}}"
+          echo "${{github.event.issue.number}}"
+          echo "${{github.event.comment.body}}"
+      - name: Publicar comentario
+        if: github.event_name == 'issues' && github.event.action == 'opened'
+        run:  gh issue comment ${{ github.event.issue.number }} --body "Hola! gracias por tu aporte"
+        
+      
