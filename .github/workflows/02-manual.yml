@@ -39,9 +39,14 @@ jobs:
           echo "$DRY_RUN"
           echo "$REASON"
 
+      # comparamos con 'false'/'true' porque los inputs llegan como string:
+      # es mas explicito y seguro que negar con ! (antes: if: ${{ !inputs.dry_run }})
       - name: Deploy
-        if:  ${{ !inputs.dry_run }}
-        run: echo "Deploying to ${{inputs.environment}}"
+      # solo corre si NO es dry run
+      # usamos la env var $ENVIRONMENT definida arriba, en vez de interpolar el input en el run
+        if: inputs.dry_run == 'false' 
+        run: echo "Deploying to $ENVIRONMENT"
       - name: Dry run
-        if: inputs.dry_run
+      # solo corre si ES dry run
+        if: inputs.dry_run == 'true'
         run: echo "Dry run enabled"
