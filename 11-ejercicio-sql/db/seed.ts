@@ -1,5 +1,7 @@
-import jobs from './jobs.json' with {type: 'json'}
+/* Usamos randomUUID para el nuevo ID */
+import { randomUUID } from 'node:crypto'
 import { db } from './database.js'
+import jobs from './jobs.json' with { type: 'json' }
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS jobs (
@@ -20,7 +22,8 @@ db.exec(`
   );
 
   CREATE TABLE IF NOT EXISTS job_content(
-    job_id TEXT NOT NULL,
+    id TEXT PRIMARY KEY,
+    job_id TEXT NOT NULL UNIQUE,
     description TEXT NOT NULL,
     responsibilities TEXT NOT NULL,
     requirements TEXT NOT NULL,
@@ -38,8 +41,9 @@ const insertTech = db.prepare(`
     INSERT OR IGNORE INTO job_technologies (job_id, technology) VALUES (?,?)  
   `)
 
+/* Incluidmos el ID */
 const insertJobContent = db.prepare(`
-  INSERT OR IGNORE INTO job_content (job_id, description, responsibilities, requirements, about ) VALUES (?,?,?,?,?)`)
+  INSERT OR IGNORE INTO job_content (id, job_id, description, responsibilities, requirements, about ) VALUES (?,?,?,?,?,?)`)
 
 const seed = db.transaction(() => {
 
@@ -53,7 +57,8 @@ const seed = db.transaction(() => {
       insertTech.run(job.id, tech)
     }
 
-    insertJobContent.run(job.id, job.content.description, job.content.responsibilities, job.content.requirements, job.content.about)
+    // id autogenerado porque el JSON no trae id de contenido
+    insertJobContent.run(randomUUID(), job.id, job.content.description, job.content.responsibilities, job.content.requirements, job.content.about)
 
   }
   
