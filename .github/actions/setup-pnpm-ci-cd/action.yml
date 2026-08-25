@@ -1,14 +1,12 @@
+# esta action faltaba
 name: Setup pnpm and Node.js for CI/CD
 description: Setup pnpm and Node.js for CI/CD
-
 inputs:
   node-version:
     description: "Node.js version"
-    required: false
     default: "24"
   pnpm-version:
     description: "pnpm version"
-    required: false
     default: "11"
 
 runs:
@@ -26,7 +24,6 @@ runs:
         node-version: ${{ inputs.node-version }}
 
     - name: Install dependencies
+      working-directory: 12-ejercicio-cicd  # instala desde la raiz del repo
       shell: bash
-      run: |
-        cd 12-ejercicio-cicd
-        pnpm install --frozen-lockfile
+      run: pnpm install --frozen-lockfile
