@@ -21,6 +21,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-    
-
-  
+      # Faltaba esta parte
+      - name: Listar archivos del repo
+        run: ls -la
