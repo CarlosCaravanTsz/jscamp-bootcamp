@@ -22,10 +22,14 @@ jobs:
         write
     steps:
       - name: Imprimir
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
-          echo "${{github.event_name}}"
-          echo "${{github.event.issue.number}}"
-          echo "${{github.event.comment.body}}"
+          echo "$EVENT_NAME"
+          echo "$ISSUE_NUMBER"
+          echo "$COMMENT_BODY"
       - name: Publicar comentario
         if: github.event_name == 'issues' && github.event.action == 'opened'
         run:  gh issue comment ${{ github.event.issue.number }} --body "Hola! gracias por tu aporte"
