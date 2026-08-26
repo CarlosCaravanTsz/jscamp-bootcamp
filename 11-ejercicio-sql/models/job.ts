@@ -4,7 +4,6 @@ import type { CreateJobDTO, JobFilters, UpdateJobDTO } from '../types';
 import { JobAPI, JobDB } from '../types';
 import { mapperJob } from '../utils/mapper';
 
-/* No hace falta que sea un let porque no se actualiza. El que se actualiza es la variable `query` que agregaste debajo */
 const query_base = `
         SELECT j.*, GROUP_CONCAT(jt.technology) as technologies, jc.description as description_ext, jc.responsibilities, jc.requirements, jc.about
         FROM jobs j
@@ -42,10 +41,8 @@ export class JobModel {
       query += ' WHERE ' + conditions.join(' AND ')
     }
 
-    /* Ordenamos por id */
     query += ' GROUP BY j.id ORDER BY j.id'
 
-    /* Podemos filtrar igual si no tenemos offset, usando su valor por defecto */
     if (filters?.limit !== undefined) {
       query += ` LIMIT ? OFFSET ?`
       params.push(String(filters.limit), String(filters.offset ?? 0))
@@ -100,7 +97,6 @@ export class JobModel {
       insertTech.run(newJob.id, tech)
     }
 
-    // content es opcional: solo insertar si existe
     if (newJob.content) {
       insertJobContent.run(newJob.id, newJob.content.description, newJob.content.responsibilities, newJob.content.requirements, newJob.content.about)
     }
@@ -135,7 +131,7 @@ export class JobModel {
 
     try {
       const tx = db.transaction(() => {
-        /* Simplificamos el update */
+
         if (cols.length > 0) {
           const { changes } = db.prepare(`UPDATE jobs SET ${cols.join(', ')} WHERE id = ?`).run(...vals, id)
           if (changes === 0) throw new Error('No job found')
@@ -148,7 +144,6 @@ export class JobModel {
         }
 
         if (input.content) {
-        // Hacemos un UPSERT: creamos la fila si no existe o la actualizamos si ya está
           db.prepare(`
         INSERT INTO job_content (id, job_id, description, responsibilities, requirements, about)
         VALUES (?, ?, ?, ?, ?, ?)

@@ -1,4 +1,3 @@
-/* Usamos randomUUID para el nuevo ID */
 import { randomUUID } from 'node:crypto'
 import { db } from './database.js'
 import jobs from './jobs.json' with { type: 'json' }
@@ -41,7 +40,6 @@ const insertTech = db.prepare(`
     INSERT OR IGNORE INTO job_technologies (job_id, technology) VALUES (?,?)  
   `)
 
-/* Incluidmos el ID */
 const insertJobContent = db.prepare(`
   INSERT OR IGNORE INTO job_content (id, job_id, description, responsibilities, requirements, about ) VALUES (?,?,?,?,?,?)`)
 
@@ -57,7 +55,6 @@ const seed = db.transaction(() => {
       insertTech.run(job.id, tech)
     }
 
-    // id autogenerado porque el JSON no trae id de contenido
     insertJobContent.run(randomUUID(), job.id, job.content.description, job.content.responsibilities, job.content.requirements, job.content.about)
 
   }
