@@ -15,7 +15,6 @@ jobs:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-pnpm-ci-cd
       - name: Lint
-        # working-directory es mas declarativo que hacer "cd" dentro del run, y funciona igual en los runners de Windows de la matriz
         working-directory: 12-ejercicio-cicd  # raiz del repo
         run: |
           echo "::group::Lint"

@@ -21,8 +21,6 @@ jobs:
       issues:
         write
     steps:
-      # los valores del evento se pasan por env vars en vez de interpolarlos en el run:
-      # si un body de comentario trae saltos de linea o comillas, interpolarlo directo rompe el script
       - name: Imprimir
         env:
           EVENT_NAME: ${{ github.event_name }}
