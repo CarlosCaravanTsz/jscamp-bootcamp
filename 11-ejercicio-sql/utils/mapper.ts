@@ -1,5 +1,5 @@
 
-import type {JobDB, JobAPI} from '../types.ts'
+import type { JobAPI, JobDB } from '../types.ts'
 
 export const mapperJob = (jobs: JobDB[]): JobAPI[] => {
 
@@ -12,7 +12,7 @@ export const mapperJob = (jobs: JobDB[]): JobAPI[] => {
     data: {
       modality: job.modality,
       level: job.level,
-      technology: job.technologies.split(',')
+      technology: job.technologies ? job.technologies.split(',') : [],  // Si no vienen tecnologías, devolvemos []
     },
     content: {
       description: job.description_ext,

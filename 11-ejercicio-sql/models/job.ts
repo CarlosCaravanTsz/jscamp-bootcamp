@@ -1,10 +1,10 @@
-import crypto from 'node:crypto'
-import type { CreateJobDTO, UpdateJobDTO, JobFilters } from '../types'
-import { mapperJob } from '../utils/mapper'
-import { db } from '../db/database'
+import crypto from 'node:crypto';
+import { db } from '../db/database';
+import type { CreateJobDTO, JobFilters, UpdateJobDTO } from '../types';
 import { JobAPI, JobDB } from '../types';
+import { mapperJob } from '../utils/mapper';
 
-let query_base = `
+const query_base = `
         SELECT j.*, GROUP_CONCAT(jt.technology) as technologies, jc.description as description_ext, jc.responsibilities, jc.requirements, jc.about
         FROM jobs j
         LEFT JOIN job_technologies jt ON j.id = jt.job_id
@@ -27,12 +27,12 @@ export class JobModel {
     }
 
     if(filters?.modality) {
-      conditions.push(' modality = ?')
+      conditions.push(' j.modality = ?')
       params.push(filters.modality)
     }
 
     if(filters?.level) {
-      conditions.push(' level = ?')
+      conditions.push(' j.level = ?')
       params.push(filters.level)
     }
 
@@ -41,12 +41,11 @@ export class JobModel {
       query += ' WHERE ' + conditions.join(' AND ')
     }
 
-    query += ' GROUP BY j.id'
+    query += ' GROUP BY j.id ORDER BY j.id'
 
-    if (filters?.limit && filters?.offset) {
+    if (filters?.limit !== undefined) {
       query += ` LIMIT ? OFFSET ?`
-      params.push(filters.limit)
-      params.push(filters.offset)
+      params.push(String(filters.limit), String(filters.offset ?? 0))
     }
 
 
@@ -98,7 +97,9 @@ export class JobModel {
       insertTech.run(newJob.id, tech)
     }
 
-    insertJobContent.run(newJob.id, newJob.content?.description, newJob.content?.responsibilities, newJob.content?.requirements, newJob.content?.about)
+    if (newJob.content) {
+      insertJobContent.run(newJob.id, newJob.content.description, newJob.content.responsibilities, newJob.content.requirements, newJob.content.about)
+    }
 
   })
 
@@ -117,40 +118,42 @@ export class JobModel {
 
   // Actualizar un job
   static async update(id: string, input: UpdateJobDTO): Promise<JobAPI | null> {
-    
-    const updateJob = db.prepare(`UPDATE jobs 
-    SET title = ?,
-    company = ?,
-    location = ?,
-    description = ?,
-    modality = ?,
-    level = ?
-    WHERE id = ?
-    `)
+    const cols: string[] = []
+    const vals: unknown[] = []
+
+    // Solo agrega al UPDATE los campos que vienen en el body (patch parcial)
+    if (input.title !== undefined) { cols.push('title = ?'); vals.push(input.title) }
+    if (input.company !== undefined) { cols.push('company = ?'); vals.push(input.company) }
+    if (input.location !== undefined) { cols.push('location = ?'); vals.push(input.location) }
+    if (input.description !== undefined) { cols.push('description = ?'); vals.push(input.description) }
+    if (input.data?.modality !== undefined) { cols.push('modality = ?'); vals.push(input.data.modality) }
+    if (input.data?.level !== undefined) { cols.push('level = ?'); vals.push(input.data.level) }
 
     try {
-
       const tx = db.transaction(() => {
-        const { changes } = updateJob.run(input.title, input.company, input.location, input.description, input.data?.modality, input.data?.level, id)
-    
-        if (changes === 0) throw new Error('No job found');
 
-        const techs = input.data?.technology
-        if (techs && techs.length > 0) {
-          db.prepare('DELETE FROM job_technologies WHERE job_id = ?').run(id)
-          for (const tech of techs) {
-            db.prepare('INSERT INTO job_technologies (job_id, technology) VALUES (?, ?)').run(id, tech)
-          }
+        if (cols.length > 0) {
+          const { changes } = db.prepare(`UPDATE jobs SET ${cols.join(', ')} WHERE id = ?`).run(...vals, id)
+          if (changes === 0) throw new Error('No job found')
         }
 
-        db.prepare(`
-      UPDATE job_content
-      SET description = ?,
-      responsibilities = ?,
-      requirements = ?,
-      about = ?
-      WHERE job_id = ?
-    `).run(input.content?.description, input.content?.responsibilities, input.content?.requirements, input.content?.about, id)
+        if (input.data?.technology && input.data.technology.length > 0) {
+          db.prepare('DELETE FROM job_technologies WHERE job_id = ?').run(id)
+          const insTech = db.prepare('INSERT INTO job_technologies (job_id, technology) VALUES (?, ?)')
+          for (const tech of input.data.technology) insTech.run(id, tech)
+        }
+
+        if (input.content) {
+          db.prepare(`
+        INSERT INTO job_content (id, job_id, description, responsibilities, requirements, about)
+        VALUES (?, ?, ?, ?, ?, ?)
+        ON CONFLICT(job_id) DO UPDATE SET
+          description = excluded.description,
+          responsibilities = excluded.responsibilities,
+          requirements = excluded.requirements,
+          about = excluded.about
+      `).run(crypto.randomUUID(), id, input.content.description, input.content.responsibilities, input.content.requirements, input.content.about)
+        }
       })
       tx()
 
