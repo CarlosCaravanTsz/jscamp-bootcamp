@@ -1,4 +1,4 @@
-import type { ExperienceLevel, WorkMode, Technology } from './types.ts'
+import type { ExperienceLevel, Technology, WorkMode } from './types.ts'
 
 export type Job = {
   id: string
@@ -7,7 +7,7 @@ export type Job = {
   location: string
   description: string
   salary?: number
-  technologies?: Technology[]
+  technologies: Technology[] // Esto debe ser obligatorio, no opcional
   experienceLevel: ExperienceLevel
   workMode: WorkMode
   isActive: boolean
