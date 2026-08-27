@@ -1,6 +1,4 @@
-import { randomUUID } from 'node:crypto'
 import { db } from './database.js'
-import jobs from './jobs.json' with { type: 'json' }
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS jobs (
@@ -21,10 +19,9 @@ db.exec(`
   );
 
   CREATE TABLE IF NOT EXISTS job_content(
-    id TEXT PRIMARY KEY,
-    job_id TEXT NOT NULL UNIQUE,
+    job_id TEXT PRIMARY KEY,
     description TEXT NOT NULL,
-    responsibilities TEXT NOT NULL,
+    responsabilities TEXT NOT NULL,
     requirements TEXT NOT NULL,
     about TEXT NOT NULL,
     FOREIGN KEY (job_id) REFERENCES jobs(id) ON DELETE CASCADE
@@ -40,24 +37,21 @@ const insertTech = db.prepare(`
     INSERT OR IGNORE INTO job_technologies (job_id, technology) VALUES (?,?)  
   `)
 
-const insertJobContent = db.prepare(`
-  INSERT OR IGNORE INTO job_content (id, job_id, description, responsibilities, requirements, about ) VALUES (?,?,?,?,?,?)`)
-
 const seed = db.transaction(() => {
+  insertJob.run('1', 'Senior Frontend Developer', 'Tech Corp', 'Madrid, Spain', 'Looking for a senior frontend developer', 'hybrid', 'senior')
+  insertTech.run('1', 'React')
+  insertTech.run('1','Typescript')
+  insertTech.run('1','CSS')
 
-  for (const job of jobs) {
-
-    insertJob.run(
-      job.id, job.title, job.company, job.location, job.description, job.modality, job.level
-    )
-
-    for (const tech of job.technologies) {
-      insertTech.run(job.id, tech)
-    }
-
-    insertJobContent.run(randomUUID(), job.id, job.content.description, job.content.responsibilities, job.content.requirements, job.content.about)
-
-  }
+  insertJob.run('2', 'Full Stack Developer', 'Startup', 'Remote','Join our team as fs developer', 'remote', 'mid')
+  insertTech.run('2', 'Node.js')
+  insertTech.run('2','React')
+  insertTech.run('2', 'PostgreSQL')
+  
+    insertJob.run('3', 'Junior Backend Developer', 'Fintech Solutions', 'Barcelona','Great opportunity for junior developers','onsite', 'junior')
+  insertTech.run('3', 'Node.js')
+  insertTech.run('3','Typescript')
+  insertTech.run('3', 'MongoDB')
   
 })
 
